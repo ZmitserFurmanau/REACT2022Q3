@@ -8,6 +8,8 @@ export default class SearchForm extends Component<Record<string, never>, SearchF
     value: '',
   };
 
+  private readonly newProperty = 'Search...';
+
   componentDidMount() {
     this.setState({ value: localStorage.getItem('zmitserfurmanau-search-query') || '' });
   }
@@ -31,6 +33,8 @@ export default class SearchForm extends Component<Record<string, never>, SearchF
           className={styles.input}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleSearch(e)}
           value={this.state.value}
+          placeholder={this.newProperty}
+          autoFocus={true}
         />
       </form>
     );
