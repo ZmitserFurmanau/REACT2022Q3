@@ -3,6 +3,7 @@ import { MainPageState } from './types';
 import Header from '../../components/Header';
 
 import styles from './MainPage.module.scss';
+import SearchForm from 'components/SearchForm';
 
 export default class MainPage extends Component {
   // constructor() {
@@ -13,7 +14,9 @@ export default class MainPage extends Component {
   render() {
     return (
       <div>
-        <p>Main Page</p>
+        <div className={styles.formWrapper}>
+          <SearchForm />
+        </div>
       </div>
     );
   }

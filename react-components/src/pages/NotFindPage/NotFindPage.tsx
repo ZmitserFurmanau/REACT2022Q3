@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { PageNotFindProps, PageNotFindState } from './types';
+import { NotFindPageProps, NotFindPageState } from './types';
 
-import styles from './PageNotFind.module.scss';
+import styles from './NotFindPage.module.scss';
 
-export default class PageNotFind extends Component {
+export default class NotFindPage extends Component {
   // constructor() {
   //   super(null);
   //   // this.state = {};

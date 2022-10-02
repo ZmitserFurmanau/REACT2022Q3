@@ -2,13 +2,33 @@ a {
   text-decoration: none;
   color: inherit;
   transition: color .3s, border-bottom .3s;
+
   &:hover {
     color: #ffbb00;
   }
+
   &.active {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #fff;
+
     &:hover {
       border-bottom: 1px solid #ffbb00;
     }
   }
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color .3s;
+
+  &:hover {
+    background-color: #ffbb00;
+  }
+}
+
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
 }
