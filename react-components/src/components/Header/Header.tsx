@@ -7,10 +7,10 @@ export default class Header extends Component {
   render() {
     return (
       <div className={styles.wrapper}>
-        <NavLink to="/" className={styles.link}>
-          Main
+        <NavLink to="/" className={styles.link} data-testid="main-link">
+          Home
         </NavLink>
-        <NavLink to="/about" className={styles.link}>
+        <NavLink to="/about" className={styles.link} data-testid="about-link">
           About Us
         </NavLink>
       </div>

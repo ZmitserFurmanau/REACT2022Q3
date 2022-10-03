@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { CardItemProps } from './types';
 
+import { CardItemProps } from './types';
 import styles from './CardItem.module.scss';
 
 export default class CardItem extends Component<CardItemProps> {
@@ -11,7 +11,7 @@ export default class CardItem extends Component<CardItemProps> {
   render() {
     const { id, title, ingredients, price, weight, ccal } = this.props;
     return (
-      <article className={styles.wrapper}>
+      <li className={styles.wrapper}>
         <div className={styles.img}>
           <img src={`/img/cards/${id}.jpg`} alt="" />
         </div>
@@ -19,15 +19,15 @@ export default class CardItem extends Component<CardItemProps> {
         <p className={styles.ingredients}>{ingredients}</p>
         <div className={styles.footer}>
           <div className={styles.left}>
-            <span>{weight} gr</span>
-            <span>{ccal} ccal</span>
+            <span>{weight} grams </span>
+            <span>{ccal} ccal </span>
           </div>
           <span className={styles.price}>{price} €</span>
         </div>
         <button type="button" className={styles.button}>
           Choose
         </button>
-      </article>
+      </li>
     );
   }
 }

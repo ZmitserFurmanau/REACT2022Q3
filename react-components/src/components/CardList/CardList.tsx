@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+
 import CardItem from '../CardItem';
 import db from '../../assets/data/db.json';
 import { CardData } from '../../utils/types';
-
 import styles from './CardList.module.scss';
 
 export default class CardList extends Component {
@@ -23,6 +23,10 @@ export default class CardList extends Component {
   }
 
   render() {
-    return <ul className={styles.list}>{this.generateCards()}</ul>;
+    return (
+      <ul className={styles.list} data-testid="card-list">
+        {this.generateCards()}
+      </ul>
+    );
   }
 }
