@@ -22,9 +22,12 @@ describe('App', () => {
   });
 
   it('should change pages', async () => {
+    const homeLink = screen.getByTestId('home-link');
     const aboutLink = screen.getByTestId('about-link');
     userEvent.click(aboutLink);
     expect(screen.getByTestId('about')).toBeInTheDocument();
+    userEvent.click(homeLink);
+    expect(screen.getByTestId('home')).toBeInTheDocument();
   });
 });
 
@@ -73,6 +76,10 @@ describe('Local storage', () => {
 
     const aboutLink = screen.getByTestId('about-link');
     userEvent.click(aboutLink);
+    expect(getItemMock).toHaveBeenCalledWith(key);
+
+    const homeLink = screen.getByTestId('home-link');
+    userEvent.click(homeLink);
     expect(getItemMock).toHaveBeenCalledWith(key);
   });
 });

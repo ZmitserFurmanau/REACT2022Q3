@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import AppRouter from '../../router/AppRouter';
 
 describe('Header', () => {
-  let mainLink: HTMLElement;
+  let homeLink: HTMLElement;
   let aboutLink: HTMLElement;
   beforeEach(() => {
     render(
@@ -13,12 +13,12 @@ describe('Header', () => {
         <AppRouter />
       </MemoryRouter>
     );
-    mainLink = screen.getByTestId('main-link');
+    homeLink = screen.getByTestId('home-link');
     aboutLink = screen.getByTestId('about-link');
   });
 
   it('should render component', async () => {
-    expect(mainLink).toBeInTheDocument();
+    expect(homeLink).toBeInTheDocument();
     expect(aboutLink).toBeInTheDocument();
   });
 });
