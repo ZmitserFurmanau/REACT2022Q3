@@ -15,7 +15,15 @@
 }
 
 .img {
-  display: flex;
-  justify-content: center;
-  margin: 5% 0px 0px 5%;
+  max-width: 200px;
+}
+
+.title {
+  font-weight: 700;
+  text-align: center;
+}
+
+.text {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

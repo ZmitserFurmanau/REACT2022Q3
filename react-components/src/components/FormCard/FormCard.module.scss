@@ -16,8 +16,9 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  align-items: baseline;
+  align-items: center;
   margin: 12px auto;
+  text-align: right;
 }
 
 .text {
@@ -37,4 +38,27 @@
   font-size: inherit;
   border: 1px solid #e7e7e7;
   padding: 5px;
+}
+
+.select {
+  min-width: 370px;
+  height: 35px;
+  font-size: 16px;
+  outline: none;
+  border: 1px solid #e7e7e7;
+  padding-left: 5px;
+}
+
+.slide {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 370px;
+}
+
+.agree {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
 }

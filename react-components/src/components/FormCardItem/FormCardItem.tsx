@@ -9,15 +9,21 @@ export default class FormCardItem extends Component<FormCardItemProps> {
   }
 
   render() {
-    const { name, date, postindex } = this.props;
+    const { index, name, date, delivery, time, image, agree } = this.props;
     return (
       <li className={styles.wrapper}>
-        {/* <div className={styles.img}>
-          <img src={`/img/cards/${id}.jpg`} alt="" />
-        </div> */}
-        <p className={styles.title}>{name}</p>
-        <p className={styles.date}>{date}</p>
-        <p className={styles.postindex}>{postindex}</p>
+        <p className={styles.title}>{`Order # ${index}`}</p>
+        <p className={styles.text}>{`Name: ${name}`}</p>
+        <p className={styles.text}>{`Delivery date: ${date}`}</p>
+        <p className={styles.text}>{`Type of delivery: ${delivery}`}</p>
+        <p className={styles.text}>{`Delivery time: ${time}`}</p>
+        <p className={styles.text}>
+          {agree ? '✔ yes, I agree to the processing of personal data' : ''}
+        </p>
+        <p className={styles.text}>Additional information (photo):</p>
+        <div className={styles.img}>
+          <img src={image || ''} alt="" />
+        </div>
       </li>
     );
   }

@@ -1,3 +1,5 @@
 import { FormData } from '../../utils/types';
 
-export type { FormData as FormCardItemProps };
+export interface FormCardItemProps extends FormData {
+  index: number;
+}
