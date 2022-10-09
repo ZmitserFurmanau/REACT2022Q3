@@ -16,19 +16,17 @@ export default class Form extends Component<Record<string, never>, FormState> {
   }
 
   setFormState(newState: FormData) {
-    this.setState({ formStatesArr: [...this.state.formStatesArr, newState] });
-  }
-
-  componentDidUpdate() {
-    console.log(this.state.formStatesArr);
+    this.setState({ formStatesArr: [newState, ...this.state.formStatesArr] });
   }
 
   render() {
     return (
-      <div className="wrapper">
+      <div className={styles.wrapper}>
         <div className={styles.form} data-testid="form">
           <FormCard setFormState={this.setFormState} />
         </div>
+        <h2>Your orders:</h2>
+        {this.state.formStatesArr.length ? '' : <p>Data don&apos;t found</p>}
         <FormCardList statesArr={this.state.formStatesArr} />
       </div>
     );
