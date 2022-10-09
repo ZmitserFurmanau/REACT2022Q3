@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #e7e7e7;
+  padding: 40px 60px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  min-width: 550px;
+  font-size: 18px;
+  box-shadow: 0 20px 25px rgba(153, 153, 153, 0.1);
+}
+
+.label {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  margin: 12px auto;
+}
+
+.text {
+  margin-right: 20px;
+}
+
+.button {
+  background-color: #ffcf4a;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-size: inherit;
+}
+
+.input {
+  outline: none;
+  flex-basis: 65%;
+  font-size: inherit;
+  border: 1px solid #e7e7e7;
+  padding: 5px;
+}
