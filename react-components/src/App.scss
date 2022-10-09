@@ -139,3 +139,15 @@ input[type=file]::file-selector-button {
   font-size: 14px;
   margin-right: 15px;
 }
+
+.error {
+  position: absolute;
+  bottom: -34px;
+  left: 180px;
+  font-size: 14px;
+  color: red;
+}
+
+.error-agree {
+  left: 3px;
+}

@@ -8,6 +8,7 @@ export interface CardData {
 }
 
 export interface FormRef {
+  common: React.RefObject<HTMLFormElement>;
   name: React.RefObject<HTMLInputElement>;
   date: React.RefObject<HTMLInputElement>;
   delivery: React.RefObject<HTMLSelectElement>;
