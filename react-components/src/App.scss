@@ -155,3 +155,17 @@ input[type=file]::file-selector-button {
 .error-agree {
   left: 3px;
 }
+ 
+.label {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 12px auto;
+  text-align: right;
+  position: relative;
+}
+
+.label-text {
+  margin-right: 20px;
+}
