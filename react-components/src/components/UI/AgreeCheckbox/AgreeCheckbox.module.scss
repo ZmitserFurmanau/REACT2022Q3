@@ -4,4 +4,8 @@
   display: flex;
   align-items: flex-start;
   position: relative;
+
+  & p {
+    left: 3px;
+  }
 }

@@ -142,6 +142,7 @@ input[type=file]::file-selector-button {
   border-radius: 10px;
   font-size: 14px;
   margin-right: 15px;
+  cursor: pointer
 }
 
 .error {
@@ -152,10 +153,6 @@ input[type=file]::file-selector-button {
   color: red;
 }
 
-.error-agree {
-  left: 3px;
-}
- 
 .label {
   width: 100%;
   display: flex;

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 
 import { NameInputProps } from './types';
-import { ErrorTypes, FormFieldTypes } from '../../../utils/types';
-import RequiredMessage from '../../Validation/RequiredMessage';
-import ShortMessage from '../../Validation/ShortMessage';
-import InvalidMessage from '../../Validation/InvalidMessage';
+import { ErrorTypes, FormFieldTypes, ErrorMessages } from '../../../utils/types';
+import ErrorMessage from '../../FormErrorMessage';
 import styles from './NameInput.module.scss';
 
 export default class NameInput extends Component<NameInputProps, Record<string, never>> {
@@ -20,9 +18,15 @@ export default class NameInput extends Component<NameInputProps, Record<string, 
           ref={forwardRef}
           onChange={(e) => errReset(e)}
         />
-        {errorsArr.includes(ErrorTypes.NAME_REQUIRED) && <RequiredMessage />}
-        {errorsArr.includes(ErrorTypes.NAME_SHORT) && <ShortMessage />}
-        {errorsArr.includes(ErrorTypes.NAME_INVALID) && <InvalidMessage />}
+        {errorsArr.includes(ErrorTypes.NAME_REQUIRED) && (
+          <ErrorMessage text={ErrorMessages.NAME_REQUIRED} />
+        )}
+        {errorsArr.includes(ErrorTypes.NAME_SHORT) && (
+          <ErrorMessage text={ErrorMessages.NAME_SHORT} />
+        )}
+        {errorsArr.includes(ErrorTypes.NAME_INVALID) && (
+          <ErrorMessage text={ErrorMessages.NAME_INVALID} />
+        )}
       </label>
     );
   }

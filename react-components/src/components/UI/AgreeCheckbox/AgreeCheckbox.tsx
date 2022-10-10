@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import { AgreeCheckboxProps } from './types';
-import { ErrorTypes, FormFieldTypes } from '../../../utils/types';
-import AgreeMessage from '../../Validation/AgreeMessage';
+import { ErrorTypes, FormFieldTypes, ErrorMessages } from '../../../utils/types';
+import ErrorMessage from '../../FormErrorMessage';
 import styles from './AgreeCheckbox.module.scss';
 
 export default class AgreeCheckbox extends Component<AgreeCheckboxProps, Record<string, never>> {
@@ -18,7 +18,9 @@ export default class AgreeCheckbox extends Component<AgreeCheckboxProps, Record<
           onChange={(e) => errReset(e)}
         />
         <label htmlFor="agree">I agree to the processing of personal data</label>
-        {errorsArr.includes(ErrorTypes.AGREE_REQUIRED) && <AgreeMessage />}
+        {errorsArr.includes(ErrorTypes.AGREE_REQUIRED) && (
+          <ErrorMessage text={ErrorMessages.AGREE_REQUIRED} />
+        )}
       </div>
     );
   }

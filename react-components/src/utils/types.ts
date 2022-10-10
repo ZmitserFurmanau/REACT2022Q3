@@ -45,3 +45,14 @@ export enum ErrorTypes {
   IMAGE_REQUIRED = 'image',
   AGREE_REQUIRED = 'agree',
 }
+
+export enum ErrorMessages {
+  NAME_REQUIRED = 'This field cannot be empty',
+  NAME_SHORT = 'This field cannot be less than 3 characters',
+  NAME_INVALID = 'The field contains invalid characters or numbers',
+  DATE_REQUIRED = 'This field cannot be empty',
+  DATE_INVALID = 'Necessary specify a date in the future',
+  DELIVERY_REQUIRED = 'This field cannot be empty',
+  IMAGE_REQUIRED = 'This field cannot be empty',
+  AGREE_REQUIRED = 'Necessary to agree to the processing of personal data',
+}
