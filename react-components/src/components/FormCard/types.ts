@@ -6,4 +6,6 @@ export interface FormProps {
 
 export interface FormState {
   errorsArr: string[];
+  isButtonDisabled: boolean;
+  isModalActive: boolean;
 }

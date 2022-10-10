@@ -23,8 +23,12 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #ffbb00;
+  }
+
+  &:disabled {
+    cursor: default;
   }
 }
 

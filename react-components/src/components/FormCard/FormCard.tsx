@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { FormRef, FormData } from '../../utils/types';
 import { FormProps, FormState } from './types';
 import { fileReader } from '../../utils/fileReader';
+import Modal from '../Modal';
 import RequiredMessage from '../Validation/RequiredMessage';
 import AgreeMessage from '../Validation/AgreeMessage';
 import ShortMessage from '../Validation/ShortMessage';
@@ -16,8 +17,11 @@ export default class FormCard extends Component<FormProps, FormState> {
   constructor(props: FormProps) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleModalActive = this.toggleModalActive.bind(this);
     this.state = {
       errorsArr: [],
+      isButtonDisabled: true,
+      isModalActive: false,
     };
     this.formRef = {
       common: React.createRef(),
@@ -51,9 +55,13 @@ export default class FormCard extends Component<FormProps, FormState> {
     if (fields.date && Date.parse(fields.date) - Number(new Date()) < 0) {
       this.setState({ errorsArr: [...this.state.errorsArr, 'date:invalid'] });
     }
+    if (fields.delivery === 'default') {
+      this.setState({ errorsArr: [...this.state.errorsArr, 'delivery'] });
+    }
   }
 
   hideValidationErr(e: React.ChangeEvent) {
+    this.setState({ isButtonDisabled: false });
     const currElem = e.target as HTMLInputElement;
     if (currElem.name === 'name') {
       this.setState({
@@ -67,6 +75,11 @@ export default class FormCard extends Component<FormProps, FormState> {
     if (currElem.name === 'date') {
       this.setState({
         errorsArr: [...this.state.errorsArr.filter((el) => el !== 'date' && el !== 'date:invalid')],
+      });
+    }
+    if (currElem.name === 'delivery') {
+      this.setState({
+        errorsArr: [...this.state.errorsArr.filter((el) => el !== 'delivery')],
       });
     }
     if (currElem.name === 'image') {
@@ -83,6 +96,12 @@ export default class FormCard extends Component<FormProps, FormState> {
 
   resetForm() {
     this.formRef.common.current?.reset();
+  }
+
+  toggleModalActive() {
+    this.setState({
+      isModalActive: !this.state.isModalActive,
+    });
   }
 
   async handleSubmit(e: React.FormEvent) {
@@ -108,91 +127,109 @@ export default class FormCard extends Component<FormProps, FormState> {
     if (!this.state.errorsArr.length) {
       this.props.setFormState({ name, date, delivery, time, image, agree });
       this.resetForm();
+      this.setState({ isModalActive: true, isButtonDisabled: true });
     }
   }
 
   render() {
     return (
-      <form className={styles.form} ref={this.formRef.common} onSubmit={this.handleSubmit}>
-        <label className={styles.label}>
-          <span className={styles.text}>Name:</span>
-          <input
-            className={styles.input}
-            type="text"
-            name="name"
-            ref={this.formRef.name}
-            onChange={(e) => this.hideValidationErr(e)}
-          />
-          {this.state.errorsArr.includes('name') && <RequiredMessage />}
-          {this.state.errorsArr.includes('name:short') && <ShortMessage />}
-          {this.state.errorsArr.includes('name:invalid') && <InvalidMessage />}
-        </label>
-        <label className={styles.label}>
-          <span className={styles.text}>Delivery date:</span>
-          <input
-            className={styles.input}
-            type="date"
-            name="date"
-            ref={this.formRef.date}
-            onChange={(e) => this.hideValidationErr(e)}
-          />
-          {this.state.errorsArr.includes('date') && <RequiredMessage />}
-          {this.state.errorsArr.includes('date:invalid') && <InvalidDateMessage />}
-        </label>
-        <label className={styles.label}>
-          <span className={styles.text}>Type of delivery:</span>
-          <select name="delivery" ref={this.formRef.delivery} className={styles.select}>
-            <option>delivery to the door</option>
-            <option>delivery to the postamate</option>
-            <option>pickup</option>
-          </select>
-        </label>
-        <label className={styles.label}>
-          <span className={styles.text}>Delivery time:</span>
-          <div className={styles.slide}>
-            <label className="label-checkbox" htmlFor="checkbox-call">
-              daytime
-            </label>
+      <div>
+        <form className={styles.form} ref={this.formRef.common} onSubmit={this.handleSubmit}>
+          <label className={styles.label}>
+            <span className={styles.text}>Name:</span>
             <input
-              className="slide-checkbox"
-              type="checkbox"
-              name="time"
-              id="checkbox-call"
-              ref={this.formRef.time}
+              className={styles.input}
+              type="text"
+              name="name"
+              ref={this.formRef.name}
+              onChange={(e) => this.hideValidationErr(e)}
             />
-            <label className="custom-checkbox" htmlFor="checkbox-call"></label>
-            <label className="label-checkbox" htmlFor="checkbox-call">
-              eveningtime
-            </label>
+            {this.state.errorsArr.includes('name') && <RequiredMessage />}
+            {this.state.errorsArr.includes('name:short') && <ShortMessage />}
+            {this.state.errorsArr.includes('name:invalid') && <InvalidMessage />}
+          </label>
+          <label className={styles.label}>
+            <span className={styles.text}>Date of delivery:</span>
+            <input
+              className={styles.input}
+              type="date"
+              name="date"
+              ref={this.formRef.date}
+              onChange={(e) => this.hideValidationErr(e)}
+            />
+            {this.state.errorsArr.includes('date') && <RequiredMessage />}
+            {this.state.errorsArr.includes('date:invalid') && <InvalidDateMessage />}
+          </label>
+          <label className={styles.label}>
+            <span className={styles.text}>Type of delivery:</span>
+            <select
+              name="delivery"
+              ref={this.formRef.delivery}
+              className={styles.select}
+              onChange={(e) => this.hideValidationErr(e)}
+              defaultValue={'default'}
+            >
+              <option disabled value="default">
+                Select delivery type
+              </option>
+              <option>delivery to the door</option>
+              <option>delivery to the postamate</option>
+              <option>pickup</option>
+            </select>
+            {this.state.errorsArr.includes('delivery') && <RequiredMessage />}
+          </label>
+          <label className={styles.label}>
+            <span className={styles.text}>Time of delivery:</span>
+            <div className={styles.slide}>
+              <label className="label-checkbox" htmlFor="checkbox-call">
+                daytime
+              </label>
+              <input
+                className="slide-checkbox"
+                type="checkbox"
+                name="time"
+                id="checkbox-call"
+                ref={this.formRef.time}
+              />
+              <label className="custom-checkbox" htmlFor="checkbox-call"></label>
+              <label className="label-checkbox" htmlFor="checkbox-call">
+                eveningtime
+              </label>
+            </div>
+          </label>
+          <label className={styles.label}>
+            <span className={styles.text}>
+              Additional information <br /> (photo):
+            </span>
+            <input
+              type="file"
+              name="image"
+              ref={this.formRef.image}
+              onChange={(e) => this.hideValidationErr(e)}
+            />
+            {this.state.errorsArr.includes('image') && <RequiredMessage />}
+          </label>
+          <div className={styles.agree}>
+            <input
+              type="checkbox"
+              name="agree"
+              id="agree"
+              ref={this.formRef.agree}
+              onChange={(e) => this.hideValidationErr(e)}
+            />
+            <label htmlFor="agree">I agree to the processing of personal data</label>
+            {this.state.errorsArr.includes('agree') && <AgreeMessage />}
           </div>
-        </label>
-        <label className={styles.label}>
-          <span className={styles.text}>
-            Additional information <br /> (photo):
-          </span>
-          <input
-            type="file"
-            name="image"
-            ref={this.formRef.image}
-            onChange={(e) => this.hideValidationErr(e)}
-          />
-          {this.state.errorsArr.includes('image') && <RequiredMessage />}
-        </label>
-        <div className={styles.agree}>
-          <input
-            type="checkbox"
-            name="agree"
-            id="agree"
-            ref={this.formRef.agree}
-            onChange={(e) => this.hideValidationErr(e)}
-          />
-          <label htmlFor="agree">I agree to the processing of personal data</label>
-          {this.state.errorsArr.includes('agree') && <AgreeMessage />}
-        </div>
-        <button type="submit" className={styles.button}>
-          Make the order
-        </button>
-      </form>
+          <button
+            type="submit"
+            className={styles.button}
+            disabled={this.state.isButtonDisabled || this.state.errorsArr.length > 0}
+          >
+            Make the order
+          </button>
+        </form>
+        <Modal isActive={this.state.isModalActive} toggleModalActive={this.toggleModalActive} />
+      </div>
     );
   }
 }
