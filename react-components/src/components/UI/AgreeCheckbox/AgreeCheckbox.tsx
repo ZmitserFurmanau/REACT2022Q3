@@ -16,6 +16,7 @@ export default class AgreeCheckbox extends Component<AgreeCheckboxProps, Record<
           id="agree"
           ref={forwardRef}
           onChange={(e) => errReset(e)}
+          data-testid="agree-checkbox"
         />
         <label htmlFor="agree">I agree to the processing of personal data</label>
         {errorsArr.includes(ErrorTypes.AGREE_REQUIRED) && (

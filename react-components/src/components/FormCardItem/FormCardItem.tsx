@@ -18,11 +18,11 @@ export default class FormCardItem extends Component<FormCardItemProps> {
         <p className={styles.text}>{`Type of delivery: ${delivery}`}</p>
         <p className={styles.text}>{`Delivery time: ${time}`}</p>
         <p className={styles.text}>
-          {agree ? '✔ yes, I agree to the processing of personal data' : ''}
+          {agree && '✔ yes, I agree to the processing of personal data'}
         </p>
         <p className={styles.text}>Additional information (photo):</p>
         <div className={styles.img}>
-          <img src={image || ''} alt="" />
+          <img src={image as string} alt="img" />
         </div>
       </li>
     );

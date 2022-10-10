@@ -21,7 +21,11 @@ export default class TimeCheckbox extends Component<TimeCheckboxProps, Record<st
             id="checkbox-call"
             ref={forwardRef}
           />
-          <label className="custom-checkbox" htmlFor="checkbox-call"></label>
+          <label
+            className="custom-checkbox"
+            htmlFor="checkbox-call"
+            data-testid="custom-checkbox"
+          ></label>
           <label className="label-checkbox" htmlFor="checkbox-call">
             evening
           </label>

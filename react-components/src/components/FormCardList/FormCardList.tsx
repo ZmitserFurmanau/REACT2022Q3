@@ -25,7 +25,7 @@ export default class FormCardList extends Component<FormCardListProps> {
 
   render() {
     return (
-      <ul className={styles.list} data-testid="card-list">
+      <ul className={styles.list} data-testid="form-card-list">
         {this.generateCards()}
       </ul>
     );

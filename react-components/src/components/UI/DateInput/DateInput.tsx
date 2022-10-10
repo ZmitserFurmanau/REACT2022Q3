@@ -17,6 +17,7 @@ export default class DateInput extends Component<DateInputProps, Record<string, 
           name={FormFieldTypes.DATE}
           ref={forwardRef}
           onChange={(e) => errReset(e)}
+          data-testid="date-input"
         />
         {errorsArr.includes(ErrorTypes.DATE_REQUIRED) && (
           <ErrorMessage text={ErrorMessages.DATE_REQUIRED} />

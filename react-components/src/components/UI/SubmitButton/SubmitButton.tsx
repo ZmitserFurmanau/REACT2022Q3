@@ -11,6 +11,7 @@ export default class SubmitButton extends Component<SubmitButtonProps, Record<st
         type="submit"
         className={styles.button}
         disabled={isButtonDisabled || errorsArr.length > 0}
+        data-testid="submit-button"
       >
         Make your order
       </button>
