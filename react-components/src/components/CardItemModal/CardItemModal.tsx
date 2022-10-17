@@ -6,13 +6,9 @@ import styles from './CardItemModal.module.scss';
 
 export default class CardItemModal extends Component<CardItemModalProps, Record<string, never>> {
   render() {
-    const { isActive, toggleActive, body, thumbnail, standfirst, lastModified, shortUrl } =
-      this.props;
+    const { body, thumbnail, standfirst, webPublicationDate, shortUrl } = this.props;
     return (
-      <div
-        className={`${styles.wrapper} ${isActive ? styles.isActive : ''}`}
-        onClick={toggleActive}
-      >
+      <div>
         <div className={styles.closeWrapper}>
           <button className={styles.close}></button>
         </div>
@@ -20,7 +16,7 @@ export default class CardItemModal extends Component<CardItemModalProps, Record<
           <header>
             <p dangerouslySetInnerHTML={{ __html: standfirst }} className={styles.standfirst}></p>
             <div className={styles.headerInner}>
-              <p className={styles.date}>{convertDate(lastModified)}</p>
+              <p className={styles.date}>{convertDate(webPublicationDate)}</p>
               <a className={styles.link} href={shortUrl} target="_blank" rel="noreferrer">
                 read on Guardian
               </a>

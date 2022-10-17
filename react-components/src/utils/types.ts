@@ -81,6 +81,14 @@ export interface GuardianResponse {
   };
 }
 
+export interface ModalData {
+  body: string;
+  thumbnail: string;
+  standfirst: string;
+  webPublicationDate: string;
+  shortUrl: string;
+}
+
 export enum FormFieldTypes {
   NAME = 'name',
   DATE = 'date',
