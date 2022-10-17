@@ -9,24 +9,21 @@ export default class CardItem extends Component<CardItemProps> {
   }
 
   render() {
-    const { id, title, ingredients, price, weight, ccal } = this.props;
+    const { body, bylineHtml, headline, lastModified, shortUrl, standfirst, thumbnail } =
+      this.props.data.fields;
     return (
       <li className={styles.wrapper}>
         <div className={styles.img}>
-          <img src={`/img/cards/${id}.jpg`} alt="" />
+          <img src={thumbnail} alt="" />
         </div>
-        <p className={styles.title}>{title}</p>
-        <p className={styles.ingredients}>{ingredients}</p>
-        <div className={styles.footer}>
-          <div className={styles.left}>
-            <span>{weight} grams </span>
-            <span>{ccal} ccal </span>
-          </div>
-          <span className={styles.price}>{price} €</span>
+        <div className={styles.content}>
+          <p className={styles.title} dangerouslySetInnerHTML={{ __html: headline }}></p>
         </div>
-        <button type="button" className={styles.button}>
-          Choose
-        </button>
+        <div className={styles.btnWrapper}>
+          <button type="button" className={styles.more}>
+            Details <span className={styles.arrow}>➜</span>
+          </button>
+        </div>
       </li>
     );
   }

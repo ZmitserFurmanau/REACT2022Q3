@@ -1,3 +1,5 @@
-import { CardData } from '../../utils/types';
+import { GuardianResponseItem } from '../../utils/types';
 
-export type { CardData as CardItemProps };
+export interface CardItemProps {
+  data: GuardianResponseItem;
+}

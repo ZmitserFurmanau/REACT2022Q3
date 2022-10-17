@@ -1,6 +1,5 @@
 import { GuardianResponseItem } from '../../utils/types';
 
-export interface SearchMainState {
-  query: string;
+export interface CardListProps {
   dataArr: GuardianResponseItem[];
 }

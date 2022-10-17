@@ -3,22 +3,18 @@ import React, { Component } from 'react';
 import CardItem from '../CardItem';
 import db from '../../assets/data/db.json';
 import { CardData } from '../../utils/types';
+import { CardListProps } from './types';
+import { GuardianResponseItem } from '../../utils/types';
 import styles from './CardList.module.scss';
 
-export default class CardList extends Component {
+export default class CardList extends Component<CardListProps, Record<string, never>> {
+  constructor(props: CardListProps) {
+    super(props);
+  }
+
   generateCards() {
-    return db.map((item: CardData) => {
-      return (
-        <CardItem
-          key={item.id}
-          id={item.id}
-          title={item.title}
-          ingredients={item.ingredients}
-          price={item.price}
-          weight={item.weight}
-          ccal={item.ccal}
-        />
-      );
+    return this.props.dataArr.map((item: GuardianResponseItem) => {
+      return <CardItem key={item.id} data={item} />;
     }) as JSX.Element[];
   }
 

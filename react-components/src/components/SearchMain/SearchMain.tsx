@@ -11,6 +11,7 @@ export default class SearchMain extends Component<Record<string, never>, SearchM
     super(props);
     this.state = {
       query: '',
+      dataArr: [],
     };
     this.setQuery = this.setQuery.bind(this);
   }
@@ -18,7 +19,8 @@ export default class SearchMain extends Component<Record<string, never>, SearchM
   async componentDidUpdate({}, prevState: SearchMainState) {
     if (prevState.query !== this.state.query) {
       const data = await GuardianService.getData(this.state.query);
-      console.log(data);
+      this.setState({ dataArr: [...data.response.results] });
+      console.log(this.state.dataArr);
     }
   }
 
@@ -32,7 +34,7 @@ export default class SearchMain extends Component<Record<string, never>, SearchM
         <div className={styles.formWrapper}>
           <SearchForm setQuery={this.setQuery} />
         </div>
-        <CardList />
+        <CardList dataArr={this.state.dataArr} />
       </div>
     );
   }
