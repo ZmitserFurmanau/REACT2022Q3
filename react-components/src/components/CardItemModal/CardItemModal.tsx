@@ -8,11 +8,15 @@ export default class CardItemModal extends Component<CardItemModalProps, Record<
   render() {
     const { body, thumbnail, standfirst, webPublicationDate, shortUrl } = this.props;
     return (
-      <div>
+      <div data-testid="card-item-modal">
         <div className={styles.closeWrapper}>
-          <button className={styles.close}></button>
+          <button className={styles.close} data-testid="close-modal-button"></button>
         </div>
-        <div className={styles.inner} onClick={(e) => e.stopPropagation()}>
+        <div
+          className={styles.inner}
+          onClick={(e) => e.stopPropagation()}
+          data-testid="modal-inner"
+        >
           <header>
             <p dangerouslySetInnerHTML={{ __html: standfirst }} className={styles.standfirst}></p>
             <div className={styles.headerInner}>

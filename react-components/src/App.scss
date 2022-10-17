@@ -226,3 +226,9 @@ ul {
     color: #fff;
   }
 }
+
+figure.element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
