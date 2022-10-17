@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import { ModalProps } from './types';
-import styles from './Modal.module.scss';
+import { FormModalProps } from './types';
+import styles from './FormModal.module.scss';
 
-export default class Modal extends Component<ModalProps, Record<string, never>> {
+export default class FormModal extends Component<FormModalProps, Record<string, never>> {
   generateModal() {
     return (
       <div className={styles.wrapper}>

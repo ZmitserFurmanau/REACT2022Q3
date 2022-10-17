@@ -1,4 +1,4 @@
-export interface ModalProps {
+export interface FormModalProps {
   isActive: boolean;
   toggleModalActive: () => void;
 }

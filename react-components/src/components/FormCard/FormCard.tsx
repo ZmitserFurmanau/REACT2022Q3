@@ -10,7 +10,7 @@ import TimeCheckbox from '../UI/TimeCheckbox';
 import FileInput from '../UI/FileInput';
 import AgreeCheckbox from '../UI/AgreeCheckbox';
 import SubmitButton from '../UI/SubmitButton/SubmitButton';
-import Modal from '../Modal';
+import FormModal from '../FormModal';
 import styles from './FormCard.module.scss';
 
 export default class FormCard extends Component<FormProps, FormState> {
@@ -164,7 +164,7 @@ export default class FormCard extends Component<FormProps, FormState> {
           <AgreeCheckbox forwardRef={agree} errorsArr={errorsArr} errReset={this.errReset} />
           <SubmitButton isButtonDisabled={isButtonDisabled} errorsArr={errorsArr} />
         </form>
-        <Modal isActive={this.state.isModalActive} toggleModalActive={this.toggleModalActive} />
+        <FormModal isActive={this.state.isModalActive} toggleModalActive={this.toggleModalActive} />
       </div>
     );
   }

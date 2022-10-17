@@ -14,6 +14,7 @@ export default class SearchMain extends Component<Record<string, never>, SearchM
       query: '',
       dataArr: [],
       isLoading: false,
+      isError: false,
     };
     this.setQuery = this.setQuery.bind(this);
   }
@@ -21,15 +22,23 @@ export default class SearchMain extends Component<Record<string, never>, SearchM
   async componentDidUpdate({}, prevState: SearchMainState) {
     if (prevState.query !== this.state.query) {
       this.setState({ isLoading: true });
-      const data = await GuardianService.getData(this.state.query);
-      this.setState({ dataArr: [...data.response.results] });
+      const data = await GuardianService.getData(this.state.query).catch(() => {
+        this.setState({ isError: true });
+      });
+      data && this.setState({ dataArr: [...data.response.results] });
       this.setState({ isLoading: false });
-      console.log(this.state.dataArr);
     }
   }
 
   setQuery(query: string) {
     this.setState({ query: query });
+  }
+
+  generateCards() {
+    if (this.state.isError) {
+      return <h1 className="errorMsg">Something went wrong... Check your internet connection.</h1>;
+    }
+    return this.state.isLoading ? <Loader /> : <CardList dataArr={this.state.dataArr} />;
   }
 
   render() {
@@ -38,7 +47,7 @@ export default class SearchMain extends Component<Record<string, never>, SearchM
         <div className={styles.formWrapper}>
           <SearchForm setQuery={this.setQuery} />
         </div>
-        {this.state.isLoading ? <Loader /> : <CardList dataArr={this.state.dataArr} />}
+        {this.generateCards()}
       </div>
     );
   }

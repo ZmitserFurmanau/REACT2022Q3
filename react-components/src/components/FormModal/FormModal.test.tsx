@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import Modal from './Modal';
+import FormModal from './FormModal';
 
-describe('Modal', () => {
+describe('FormModal', () => {
   let modal: HTMLElement | null;
   let isActive = true;
   const setup = () => {
     const mock = jest.fn();
-    render(<Modal isActive={isActive} toggleModalActive={mock} />);
+    render(<FormModal isActive={isActive} toggleModalActive={mock} />);
     modal = screen.queryByText(/order successfully created!/i);
   };
 
