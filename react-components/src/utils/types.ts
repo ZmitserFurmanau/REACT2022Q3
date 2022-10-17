@@ -26,6 +26,59 @@ export interface FormData {
   agree: boolean;
 }
 
+export interface GuardianResponseItem {
+  id: string;
+  type: string;
+  sectionId: string;
+  sectionName: string;
+  webPublicationDate: string;
+  webTitle: string;
+  webUrl: string;
+  apiUrl: string;
+  fields: {
+    headline: string;
+    standfirst: string;
+    trailText: string;
+    byline: string;
+    main: string;
+    body: string;
+    wordcount: string;
+    firstPublicationDate: string;
+    isInappropriateForSponsorship: string;
+    isPremoderated: string;
+    lastModified: string;
+    productionOffice: string;
+    publication: string;
+    shortUrl: string;
+    shouldHideAdverts: string;
+    showInRelatedContent: string;
+    thumbnail: string;
+    legallySensitive: string;
+    lang: string;
+    isLive: string;
+    bodyText: string;
+    charCount: string;
+    shouldHideReaderRevenue: string;
+    showAffiliateLinks: string;
+    bylineHtml: string;
+  };
+  isHosted: boolean;
+  pillarId: string;
+  pillarName: string;
+}
+
+export interface GuardianResponse {
+  status: string;
+  userTier: string;
+  total: number;
+  startIndex: number;
+  pageSize: number;
+  currentPage: number;
+  pages: number;
+  orderBy: string;
+  results: GuardianResponseItem[];
+}
+
 export enum FormFieldTypes {
   NAME = 'name',
   DATE = 'date',

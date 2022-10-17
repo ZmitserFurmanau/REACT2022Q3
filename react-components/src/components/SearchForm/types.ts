@@ -1,3 +1,7 @@
+export interface SearchFormProps {
+  setQuery: (query: string) => void;
+}
+
 export interface SearchFormState {
-  value: string;
+  formValue: string;
 }

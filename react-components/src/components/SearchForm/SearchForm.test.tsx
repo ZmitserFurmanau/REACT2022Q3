@@ -7,7 +7,8 @@ import SearchForm from './SearchForm';
 describe('Search form', () => {
   let input: HTMLInputElement;
   beforeEach(() => {
-    render(<SearchForm />);
+    const mock = jest.fn();
+    render(<SearchForm setQuery={mock} />);
     input = screen.getByPlaceholderText(/Search/i);
   });
 
@@ -18,12 +19,6 @@ describe('Search form', () => {
   it('should input focus', async () => {
     expect(input).toHaveFocus();
     input.focus();
-  });
-
-  it('should input type', async () => {
-    expect(input).toContainHTML('');
-    userEvent.type(input, 'Test query');
-    expect(input).toContainHTML('Test query');
   });
 
   it('should input value if localstorage contain in', async () => {
