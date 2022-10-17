@@ -14,7 +14,7 @@ export default class CardItem extends Component<CardItemProps> {
     return (
       <li className={styles.wrapper}>
         <div className={styles.img}>
-          <img src={thumbnail} alt="" />
+          <img src={thumbnail} className="img" width="500" height="300" alt="" />
         </div>
         <div className={styles.content}>
           <p className={styles.title} dangerouslySetInnerHTML={{ __html: headline }}></p>
