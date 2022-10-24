@@ -1,26 +1,22 @@
-import React, { FC } from 'react';
+import React from 'react';
+import { useController, UseControllerProps } from 'react-hook-form';
 
-import { DateInputProps } from './types';
-import { ErrorTypes, FormFieldTypes, ErrorMessages } from '../../../utils/types';
+import { ErrorMessages, FormDataValues } from '../../../utils/types';
 import ErrorMessage from '../../FormErrorMessage';
 import styles from './DateInput.module.scss';
 
-const DateInput: FC<DateInputProps> = ({ forwardRef, errorsArr, errReset }) => {
+const DateInput = (props: UseControllerProps<FormDataValues, 'date'>) => {
+  const { field, formState } = useController(props);
+  const { errors } = formState;
+
   return (
     <label className="label">
       <span className="label-text">Delivery date:</span>
-      <input
-        className={styles.input}
-        type="date"
-        name={FormFieldTypes.DATE}
-        ref={forwardRef}
-        onChange={(e) => errReset(e)}
-        data-testid="date-input"
-      />
-      {errorsArr.includes(ErrorTypes.DATE_REQUIRED) && (
+      <input className={styles.input} type="date" data-testid="date-input" {...field} />
+      {errors.date && errors.date.type === 'required' && (
         <ErrorMessage text={ErrorMessages.DATE_REQUIRED} />
       )}
-      {errorsArr.includes(ErrorTypes.DATE_INVALID) && (
+      {errors.date && errors.date.type === 'validate' && (
         <ErrorMessage text={ErrorMessages.DATE_INVALID} />
       )}
     </label>

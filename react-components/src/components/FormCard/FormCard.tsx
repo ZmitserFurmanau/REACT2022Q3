@@ -1,171 +1,116 @@
-import React, { Component, createRef } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { FormRef, FormData, ErrorTypes, FormFieldTypes } from '../../utils/types';
-import { FormProps, FormState } from './types';
+import { FormDataValues, ErrorMessages } from '../../utils/types';
+import { FormProps } from './types';
 import { fileReader } from '../../utils/fileReader';
 import NameInput from '../UI/NameInput';
 import DateInput from '../UI/DateInput';
 import DeliverySelect from '../UI/DeliverySelect';
 import TimeCheckbox from '../UI/TimeCheckbox';
-import FileInput from '../UI/FileInput';
 import AgreeCheckbox from '../UI/AgreeCheckbox';
-import SubmitButton from '../UI/SubmitButton/SubmitButton';
 import FormModal from '../FormModal';
+import ErrorMessage from '../FormErrorMessage';
 import styles from './FormCard.module.scss';
 
-export default class FormCard extends Component<FormProps, FormState> {
-  formRef: FormRef;
+const FormCard: FC<FormProps> = ({ setFormState }) => {
+  const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
-  constructor(props: FormProps) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.toggleModalActive = this.toggleModalActive.bind(this);
-    this.errReset = this.errReset.bind(this);
-    this.state = {
-      errorsArr: [],
-      isButtonDisabled: true,
-      isModalActive: false,
-    };
-    this.formRef = {
-      common: createRef(),
-      name: createRef(),
-      date: createRef(),
-      delivery: createRef(),
-      time: createRef(),
-      image: createRef(),
-      agree: createRef(),
-    };
-  }
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isDirty, isSubmitSuccessful },
+    reset,
+    register,
+  } = useForm<FormDataValues>({
+    defaultValues: {
+      name: '',
+      date: '',
+      delivery: 'default',
+      time: '',
+      image: '',
+      agree: '',
+    },
+    mode: 'onSubmit',
+  });
 
-  validate(fields: FormData) {
-    this.setState({ errorsArr: [] });
-    const keys = Object.keys(fields);
-    keys.forEach((el: string) => {
-      if (!fields[el as keyof typeof fields] || fields[el as keyof typeof fields] === '') {
-        this.setState({ errorsArr: [...this.state.errorsArr, el] });
-      }
-    });
-    if (
-      fields.name.length &&
-      !new RegExp(/[^a-zA-Z]+/g).test(fields.name) &&
-      fields.name.length < 3
-    ) {
-      this.setState({ errorsArr: [...this.state.errorsArr, ErrorTypes.NAME_SHORT] });
-    }
-    if (fields.name.length && new RegExp(/[^a-zA-Z]+/g).test(fields.name)) {
-      this.setState({ errorsArr: [...this.state.errorsArr, ErrorTypes.NAME_INVALID] });
-    }
-    if (fields.date && Date.parse(fields.date) - Number(new Date()) < 0) {
-      this.setState({ errorsArr: [...this.state.errorsArr, ErrorTypes.DATE_INVALID] });
-    }
-    if (fields.delivery === 'default') {
-      this.setState({ errorsArr: [...this.state.errorsArr, ErrorTypes.DELIVERY_REQUIRED] });
-    }
-  }
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
 
-  errReset(e: React.ChangeEvent) {
-    this.setState({ isButtonDisabled: false });
-    const currElem = e.target as HTMLInputElement;
-    switch (currElem.name) {
-      case FormFieldTypes.NAME:
-        this.setState({
-          errorsArr: [
-            ...this.state.errorsArr.filter(
-              (el) =>
-                el !== ErrorTypes.NAME_REQUIRED &&
-                el !== ErrorTypes.NAME_SHORT &&
-                el !== ErrorTypes.NAME_INVALID
-            ),
-          ],
-        });
-        break;
-      case FormFieldTypes.DATE:
-        this.setState({
-          errorsArr: [
-            ...this.state.errorsArr.filter(
-              (el) => el !== ErrorTypes.DATE_REQUIRED && el !== ErrorTypes.DATE_INVALID
-            ),
-          ],
-        });
-        break;
-      case FormFieldTypes.DELIVERY:
-        this.setState({
-          errorsArr: [...this.state.errorsArr.filter((el) => el !== ErrorTypes.DELIVERY_REQUIRED)],
-        });
-        break;
-      case FormFieldTypes.IMAGE:
-        this.setState({
-          errorsArr: [...this.state.errorsArr.filter((el) => el !== ErrorTypes.IMAGE_REQUIRED)],
-        });
-        break;
-      case FormFieldTypes.AGREE:
-        this.setState({
-          errorsArr: [...this.state.errorsArr.filter((el) => el !== ErrorTypes.AGREE_REQUIRED)],
-        });
-        break;
-      default:
-        break;
+  const toggleModalActive = () => {
+    setIsModalActive((isModalActive) => !isModalActive);
+  };
+
+  const onSubmit = async (data: FormDataValues) => {
+    const { name, date, delivery } = data;
+    const time = data.time ? 'evening' : 'daytime';
+    const agree = Boolean(data.agree);
+    let image: string;
+    if (data.image) {
+      const blob = data.image[0].slice() as unknown as Blob;
+      image = (await fileReader(blob)) as string;
+      setFormState({ name, date, delivery, time, image, agree });
     }
-  }
+    setIsModalActive(true);
+  };
 
-  resetForm() {
-    this.formRef.common.current?.reset();
-  }
-
-  toggleModalActive() {
-    this.setState({
-      isModalActive: !this.state.isModalActive,
-    });
-  }
-
-  async handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const {
-      name: nameRef,
-      date: dateRef,
-      delivery: deliveryRef,
-      time: timeRef,
-      image: imageRef,
-      agree: agreeRef,
-    } = this.formRef;
-    const name = nameRef.current?.value || '';
-    const date = dateRef.current?.value || '';
-    const delivery = deliveryRef.current?.value || '';
-    const time = timeRef.current?.checked ? 'evening' : 'day';
-    const agree = agreeRef.current?.checked || false;
-    let image: string | null = null;
-    if (imageRef.current?.files) {
-      image = (await fileReader(imageRef.current?.files[0])) as string;
-    }
-    this.validate({ name, date, delivery, time, image, agree });
-    if (!this.state.errorsArr.length) {
-      this.props.setFormState({ name, date, delivery, time, image, agree });
-      this.resetForm();
-      this.setState({ isModalActive: true, isButtonDisabled: true });
-    }
-  }
-
-  render() {
-    const { errorsArr, isButtonDisabled } = this.state;
-    const { name, date, delivery, time, image, agree } = this.formRef;
-    return (
-      <div>
-        <form
-          className={styles.form}
-          ref={this.formRef.common}
-          onSubmit={this.handleSubmit}
-          data-testid="form-card"
+  return (
+    <div>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)} data-testid="form-card">
+        <NameInput
+          control={control}
+          name="name"
+          rules={{ required: true, minLength: 3, pattern: /^[A-Za-z]+$/i }}
+        />
+        <DateInput
+          control={control}
+          name="date"
+          rules={{
+            required: true,
+            validate: (value) => !(Date.parse(value) - Number(new Date()) < 0),
+          }}
+        />
+        <DeliverySelect
+          control={control}
+          name="delivery"
+          rules={{
+            validate: (value) => value !== 'default',
+          }}
+        />
+        <TimeCheckbox control={control} name="time" />
+        <label className="label">
+          <span className="label-text">
+            Additional information <br /> (photo):
+          </span>
+          <input
+            type="file"
+            data-testid="file-input"
+            {...register('image', {
+              required: true,
+            })}
+          />
+          {errors.image && <ErrorMessage text={ErrorMessages.IMAGE_REQUIRED} />}
+        </label>
+        <AgreeCheckbox
+          control={control}
+          name="agree"
+          rules={{
+            validate: (value) => value,
+          }}
+        />
+        <button
+          type="submit"
+          className={styles.button}
+          disabled={!isDirty || Object.keys(errors).length !== 0}
+          data-testid="submit-button"
         >
-          <NameInput forwardRef={name} errorsArr={errorsArr} errReset={this.errReset} />
-          <DateInput forwardRef={date} errorsArr={errorsArr} errReset={this.errReset} />
-          <DeliverySelect forwardRef={delivery} errorsArr={errorsArr} errReset={this.errReset} />
-          <TimeCheckbox forwardRef={time} />
-          <FileInput forwardRef={image} errorsArr={errorsArr} errReset={this.errReset} />
-          <AgreeCheckbox forwardRef={agree} errorsArr={errorsArr} errReset={this.errReset} />
-          <SubmitButton isButtonDisabled={isButtonDisabled} errorsArr={errorsArr} />
-        </form>
-        <FormModal isActive={this.state.isModalActive} toggleModalActive={this.toggleModalActive} />
-      </div>
-    );
-  }
-}
+          Place the order
+        </button>
+      </form>
+      <FormModal isActive={isModalActive} toggleModalActive={toggleModalActive} />
+    </div>
+  );
+};
+
+export default FormCard;

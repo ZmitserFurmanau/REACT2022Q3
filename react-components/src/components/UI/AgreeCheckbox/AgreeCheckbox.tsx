@@ -1,23 +1,19 @@
-import React, { FC } from 'react';
+import React from 'react';
+import { useController, UseControllerProps } from 'react-hook-form';
 
-import { AgreeCheckboxProps } from './types';
-import { ErrorTypes, FormFieldTypes, ErrorMessages } from '../../../utils/types';
+import { ErrorMessages, FormDataValues } from '../../../utils/types';
 import ErrorMessage from '../../FormErrorMessage';
 import styles from './AgreeCheckbox.module.scss';
 
-const AgreeCheckbox: FC<AgreeCheckboxProps> = ({ forwardRef, errorsArr, errReset }) => {
+const AgreeCheckbox = (props: UseControllerProps<FormDataValues, 'agree'>) => {
+  const { field, formState } = useController(props);
+  const { errors } = formState;
+
   return (
     <div className={styles.agree}>
-      <input
-        type="checkbox"
-        name={FormFieldTypes.AGREE}
-        id="agree"
-        ref={forwardRef}
-        onChange={(e) => errReset(e)}
-        data-testid="agree-checkbox"
-      />
+      <input type="checkbox" id="agree" data-testid="agree-checkbox" {...field} />
       <label htmlFor="agree">I agree to the processing of personal data</label>
-      {errorsArr.includes(ErrorTypes.AGREE_REQUIRED) && (
+      {errors.agree && errors.agree.type === 'validate' && (
         <ErrorMessage text={ErrorMessages.AGREE_REQUIRED} />
       )}
     </div>

@@ -1,21 +1,16 @@
-import React, { FC } from 'react';
-
-import { DeliverySelectProps } from './types';
-import { ErrorTypes, FormFieldTypes, ErrorMessages } from '../../../utils/types';
+import React from 'react';
+import { useController, UseControllerProps } from 'react-hook-form';
+import { ErrorMessages, FormDataValues } from '../../../utils/types';
 import ErrorMessage from '../../FormErrorMessage';
 import styles from './DeliverySelect.module.scss';
 
-const DeliverySelect: FC<DeliverySelectProps> = ({ forwardRef, errorsArr, errReset }) => {
+const DeliverySelect = (props: UseControllerProps<FormDataValues, 'delivery'>) => {
+  const { field, formState } = useController(props);
+  const { errors } = formState;
   return (
     <label className="label">
       <span className="label-text">Type of delivery:</span>
-      <select
-        name={FormFieldTypes.DELIVERY}
-        className={styles.select}
-        ref={forwardRef}
-        onChange={(e) => errReset(e)}
-        defaultValue={'default'}
-      >
+      <select className={styles.select} {...field}>
         <option disabled value="default">
           Choose the type of delivery
         </option>
@@ -23,7 +18,7 @@ const DeliverySelect: FC<DeliverySelectProps> = ({ forwardRef, errorsArr, errRes
         <option>delivery to the postamate</option>
         <option>selfexport</option>
       </select>
-      {errorsArr.includes(ErrorTypes.DELIVERY_REQUIRED) && (
+      {errors.delivery && errors.delivery.type === 'validate' && (
         <ErrorMessage text={ErrorMessages.DELIVERY_REQUIRED} />
       )}
     </label>
