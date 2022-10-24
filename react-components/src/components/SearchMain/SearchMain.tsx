@@ -17,16 +17,26 @@ const SearchMain: FC = () => {
   const [modalData, setModalData] = useState<ModalData | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       setIsLoading(true);
       const data = await getData(query).catch(() => {
         setIsError(true);
+        setIsLoading(false);
       });
-      data && setDataArr([...data.response.results]);
-      setIsLoading(false);
+      data && isMounted && setDataArr([...data.response.results]);
     };
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, [query]);
+
+  useEffect(() => {
+    if (dataArr.length) {
+      setIsLoading(false);
+    }
+  }, [dataArr]);
 
   const updateQuery = (query: string) => {
     setQuery(query);

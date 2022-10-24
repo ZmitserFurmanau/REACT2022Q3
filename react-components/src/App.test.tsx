@@ -1,14 +1,32 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import AppRouter from './router/AppRouter';
 import mockLocalStorage from './tests/mockLocalStorage';
+import { mockGuardianResponse } from './tests/mockGuardianResponse';
 
 const { getItemMock, setItemMock } = mockLocalStorage();
+const mockedResponse = mockGuardianResponse();
 
 describe('App', () => {
+  const server = setupServer(
+    rest.get(`https://content.guardianapis.com/search`, (req, res, ctx) => {
+      return res(ctx.json(mockedResponse));
+    })
+  );
+
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   beforeEach(() => {
     render(
       <MemoryRouter initialEntries={['/']}>
@@ -17,11 +35,16 @@ describe('App', () => {
     );
   });
 
+  afterEach(() => {
+    server.resetHandlers();
+  });
+
   it('should render app component', async () => {
     expect(screen.getByTestId('home')).toBeInTheDocument();
   });
 
   it('should change pages', async () => {
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const homeLink = screen.getByTestId('home-link');
     const aboutLink = screen.getByTestId('about-link');
     userEvent.click(aboutLink);

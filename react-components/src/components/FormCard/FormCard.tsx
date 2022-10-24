@@ -44,7 +44,7 @@ const FormCard: FC<FormProps> = ({ setFormState }) => {
 
   const onSubmit = async (data: FormDataValues) => {
     const { name, date, delivery } = data;
-    const time = data.time ? 'evening' : 'daytime';
+    const time = data.time ? 'evening' : 'day';
     const agree = Boolean(data.agree);
     let image: string;
     if (data.image) {
@@ -87,7 +87,7 @@ const FormCard: FC<FormProps> = ({ setFormState }) => {
             type="file"
             data-testid="file-input"
             {...register('image', {
-              required: true,
+              validate: (value) => value !== '',
             })}
           />
           {errors.image && <ErrorMessage text={ErrorMessages.IMAGE_REQUIRED} />}
