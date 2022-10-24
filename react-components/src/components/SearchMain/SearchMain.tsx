@@ -1,53 +1,46 @@
-import React, { Component } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 
-import { SearchMainState } from './types';
 import SearchForm from '../../components/SearchForm';
 import CardList from '../../components/CardList';
-import GuardianService from '../../services/GuardianService';
+import { getData } from '../../services/GuardianService';
 import Loader from '../Loader';
 import CardItemModal from '../CardItemModal';
-import { ModalData } from '../../utils/types';
+import { ModalData, GuardianResponseItem } from '../../utils/types';
 import styles from './SearchMain.module.scss';
 
-export default class SearchMain extends Component<Record<string, never>, SearchMainState> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = {
-      query: '',
-      dataArr: [],
-      isLoading: false,
-      isError: false,
-      isModalActive: false,
-      modalData: null,
-    };
-    this.setQuery = this.setQuery.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
-  }
+const SearchMain: FC = () => {
+  const [query, setQuery] = useState<string>('');
+  const [dataArr, setDataArr] = useState<GuardianResponseItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isModalActive, setIsModalActive] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<ModalData | null>(null);
 
-  async componentDidUpdate({}, prevState: SearchMainState) {
-    if (prevState.query !== this.state.query) {
-      this.setState({ isLoading: true });
-      const data = await GuardianService.getData(this.state.query).catch(() => {
-        this.setState({ isError: true });
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const data = await getData(query).catch(() => {
+        setIsError(true);
       });
-      data && this.setState({ dataArr: [...data.response.results] });
-      this.setState({ isLoading: false });
-    }
-  }
+      data && setDataArr([...data.response.results]);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [query]);
 
-  setQuery(query: string) {
-    this.setState({ query: query });
-  }
-  toggleModal(newModalData?: ModalData | undefined) {
-    this.setState({ isModalActive: !this.state.isModalActive });
-    !newModalData && this.setState({ modalData: null });
-    newModalData && this.setState({ modalData: { ...newModalData } });
-  }
+  const updateQuery = (query: string) => {
+    setQuery(query);
+  };
 
-  generateModal() {
-    const data = this.state.modalData;
-    if (!data) return null;
-    const { body, thumbnail, standfirst, webPublicationDate, shortUrl } = data;
+  const toggleModal = (newModalData?: ModalData | undefined) => {
+    setIsModalActive((isModalActive) => !isModalActive);
+    !newModalData && setModalData(null);
+    newModalData && setModalData({ ...newModalData });
+  };
+
+  const generateModal = () => {
+    if (!modalData) return null;
+    const { body, thumbnail, standfirst, webPublicationDate, shortUrl } = modalData;
     return (
       <CardItemModal
         body={body}
@@ -57,33 +50,29 @@ export default class SearchMain extends Component<Record<string, never>, SearchM
         shortUrl={shortUrl}
       />
     );
-  }
+  };
 
-  generateCards() {
-    if (this.state.isError) {
+  const generateCards = () => {
+    if (isError) {
       return <h1 className="errorMsg">Something went wrong... Check your internet connection.</h1>;
     }
-    return this.state.isLoading ? (
-      <Loader />
-    ) : (
-      <CardList dataArr={this.state.dataArr} toggleModal={this.toggleModal} />
-    );
-  }
+    return isLoading ? <Loader /> : <CardList dataArr={dataArr} toggleModal={toggleModal} />;
+  };
 
-  render() {
-    return (
-      <div data-testid="home">
-        <div className={styles.formWrapper}>
-          <SearchForm setQuery={this.setQuery} />
-        </div>
-        {this.generateCards()}
-        <div
-          className={`${styles.modalWrapper} ${this.state.isModalActive ? styles.isActive : ''}`}
-          onClick={() => this.toggleModal()}
-        >
-          {this.generateModal()}
-        </div>
+  return (
+    <div data-testid="home">
+      <div className={styles.formWrapper}>
+        <SearchForm setQuery={updateQuery} />
       </div>
-    );
-  }
-}
+      {generateCards()}
+      <div
+        className={`${styles.modalWrapper} ${isModalActive ? styles.isActive : ''}`}
+        onClick={() => toggleModal()}
+      >
+        {generateModal()}
+      </div>
+    </div>
+  );
+};
+
+export default SearchMain;
