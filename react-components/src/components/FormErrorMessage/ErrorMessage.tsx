@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { FC } from 'react';
 
 import { ErrorMessageProps } from './types';
 
-export default class ErrorMessage extends Component<ErrorMessageProps, Record<string, never>> {
-  render() {
-    const { text } = this.props;
-    return <p className="error">{text}</p>;
-  }
-}
+const ErrorMessage: FC<ErrorMessageProps> = ({ text }) => {
+  return <p className="error">{text}</p>;
+};
+
+export default ErrorMessage;

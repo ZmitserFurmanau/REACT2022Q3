@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { FC } from 'react';
 
 import { FormCardListProps } from './types';
 import { FormData } from '../../utils/types';
 import FormCardItem from '../FormCardItem';
 import styles from './FormCardList.module.scss';
 
-export default class FormCardList extends Component<FormCardListProps> {
-  generateCards() {
-    return this.props.statesArr.map((el: FormData, idx: number) => {
+const FormCardList: FC<FormCardListProps> = ({ statesArr }) => {
+  const generateCards = () => {
+    return statesArr.map((el: FormData, idx: number) => {
       return (
         <FormCardItem
           key={idx}
-          index={this.props.statesArr.length - idx}
+          index={statesArr.length - idx}
           name={el.name}
           date={el.date}
           delivery={el.delivery}
@@ -21,13 +21,13 @@ export default class FormCardList extends Component<FormCardListProps> {
         />
       );
     }) as JSX.Element[];
-  }
+  };
 
-  render() {
-    return (
-      <ul className={styles.list} data-testid="form-card-list">
-        {this.generateCards()}
-      </ul>
-    );
-  }
-}
+  return (
+    <ul className={styles.list} data-testid="form-card-list">
+      {generateCards()}
+    </ul>
+  );
+};
+
+export default FormCardList;
