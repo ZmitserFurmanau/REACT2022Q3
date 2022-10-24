@@ -1,34 +1,27 @@
-import React, { Component } from 'react';
+import React, { FC, useState } from 'react';
 
 import FormCard from '../../components/FormCard';
 import { FormData } from '../../utils/types';
-import { FormState } from './types';
 import FormCardList from '../../components/FormCardList';
 import styles from './Form.module.scss';
 
-export default class Form extends Component<Record<string, never>, FormState> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.setFormState = this.setFormState.bind(this);
-    this.state = {
-      formStatesArr: [],
-    };
-  }
+const Form: FC = () => {
+  const [formStatesArr, setFormStatesArr] = useState<FormData[] | []>([]);
 
-  setFormState(newState: FormData) {
-    this.setState({ formStatesArr: [newState, ...this.state.formStatesArr] });
-  }
+  const setFormState = (newState: FormData) => {
+    setFormStatesArr([newState, ...formStatesArr]);
+  };
 
-  render() {
-    return (
-      <div className={styles.wrapper}>
-        <div className={styles.form} data-testid="form">
-          <FormCard setFormState={this.setFormState} />
-        </div>
-        <h2>Your orders:</h2>
-        {this.state.formStatesArr.length ? '' : <p>Data don&apos;t found</p>}
-        <FormCardList statesArr={this.state.formStatesArr} />
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.form} data-testid="form">
+        <FormCard setFormState={setFormState} />
       </div>
-    );
-  }
-}
+      <h2>Your orders:</h2>
+      {formStatesArr.length ? '' : <p>Data don&apos;t found</p>}
+      <FormCardList statesArr={formStatesArr} />
+    </div>
+  );
+};
+
+export default Form;

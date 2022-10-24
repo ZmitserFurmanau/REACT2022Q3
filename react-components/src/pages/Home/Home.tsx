@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { FC } from 'react';
 
 import SearchMain from '../../components/SearchMain';
 
-export default class Home extends Component {
-  render() {
-    return <SearchMain />;
-  }
-}
+const Home: FC = () => {
+  return <SearchMain />;
+};
+
+export default Home;
