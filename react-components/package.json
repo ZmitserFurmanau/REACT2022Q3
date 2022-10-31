@@ -42,7 +42,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "npm run lint && react-scripts build",
-    "test": "react-scripts test --coverage --watchAll --detectOpenHandles",
+    "test": "react-scripts test --coverage --watchAll --detectOpenHandles --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss}\"",
     "lint": "eslint --fix \"src/**/*.{ts,tsx,js,jsx}\"",

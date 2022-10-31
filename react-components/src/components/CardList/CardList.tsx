@@ -5,10 +5,10 @@ import { CardListProps } from './types';
 import { GuardianResponseItem } from '../../types/types';
 import styles from './CardList.module.scss';
 
-const CardList: FC<CardListProps> = ({ dataArr, toggleModal }) => {
+const CardList: FC<CardListProps> = ({ dataArr }) => {
   const generateCards = () => {
     return dataArr.map((item: GuardianResponseItem) => {
-      return <CardItem key={item.id} data={item} toggleModal={toggleModal} />;
+      return <CardItem key={item.id} data={item} />;
     }) as JSX.Element[];
   };
 

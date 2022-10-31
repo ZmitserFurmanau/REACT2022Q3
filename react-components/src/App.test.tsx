@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { rest } from 'msw';
@@ -15,10 +15,12 @@ const mockedResponse = mockGuardianResponse();
 
 describe('App', () => {
   const server = setupServer(
-    rest.get(`https://content.guardianapis.com/search`, (req, res, ctx) => {
+    rest.get(`https://content.guardianapis.com/search`, (_req, res, ctx) => {
       return res(ctx.json(mockedResponse));
     })
   );
+
+  let input: HTMLInputElement;
 
   beforeAll(() => {
     server.listen();
@@ -26,6 +28,7 @@ describe('App', () => {
 
   afterAll(() => {
     server.close();
+    jest.clearAllMocks();
   });
 
   beforeEach(() => {
@@ -36,6 +39,8 @@ describe('App', () => {
         </MemoryRouter>
       </AppProvider>
     );
+    window.scrollTo = jest.fn();
+    input = screen.getByPlaceholderText(/Search/i);
   });
 
   afterEach(() => {
@@ -54,6 +59,42 @@ describe('App', () => {
     expect(screen.getByTestId('about')).toBeInTheDocument();
     userEvent.click(homeLink);
     expect(screen.getByTestId('home')).toBeInTheDocument();
+  });
+
+  it('should open article page', async () => {
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
+    expect(input).toContainHTML('');
+    userEvent.type(input, 'california');
+    expect(input).toContainHTML('california');
+
+    const button = screen.getByRole('button', {
+      name: /find/i,
+    });
+    userEvent.click(button);
+    const loader = await screen.findByTestId('loader');
+    await waitForElementToBeRemoved(loader);
+    const cards = await screen.findAllByRole('listitem');
+    const card = cards[0];
+    userEvent.click(card);
+
+    let articlePage;
+
+    await waitFor(() => {
+      articlePage = screen.getByTestId('article');
+    });
+
+    expect(articlePage).toBeInTheDocument();
+
+    expect(articlePage).toContainHTML(mockedResponse.response.results[0].fields.standfirst);
+    expect(articlePage).toContainHTML(mockedResponse.response.results[0].fields.shortUrl);
+
+    const goBackButton = screen.getByRole('button', {
+      name: /go back/i,
+    });
+
+    userEvent.click(goBackButton);
+
+    expect(await screen.findByTestId('home')).toBeInTheDocument();
   });
 });
 

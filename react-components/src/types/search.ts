@@ -1,4 +1,4 @@
-import { GuardianResponseItem } from './types';
+import { GuardianResponseItem, ArticleData } from './types';
 
 export interface SearchState {
   query: string;
@@ -7,6 +7,7 @@ export interface SearchState {
   totalPages: number | null;
   currentPage: number;
   itemsPerPage: number;
+  articleData: ArticleData | null;
 }
 
 export enum SearchActionTypes {
@@ -16,6 +17,7 @@ export enum SearchActionTypes {
   SET_TOTAL_PAGES = 'SET_TOTAL_PAGES',
   SET_CURRENT_PAGE = 'SET_CURRENT_PAGE',
   SET_ITEMS_PER_PAGE = 'SET_ITEMS_PER_PAGE',
+  SET_ARTICLE_DATA = 'SET_ARTICLE_DATA',
 }
 
 interface SetQueryAction {
@@ -48,10 +50,16 @@ interface SetItemsPerPageAction {
   payload: number;
 }
 
+interface SetArticleDataAction {
+  type: SearchActionTypes.SET_ARTICLE_DATA;
+  payload: ArticleData;
+}
+
 export type SearchAction =
   | SetQueryAction
   | SetDataAction
   | SetSortingAction
   | SetTotalPagesAction
   | SetCurrentPageAction
-  | SetItemsPerPageAction;
+  | SetItemsPerPageAction
+  | SetArticleDataAction;

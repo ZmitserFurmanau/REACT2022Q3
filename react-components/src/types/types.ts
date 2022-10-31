@@ -16,6 +16,44 @@ export interface FormData {
   agree: boolean;
 }
 
+export interface FormDataValues {
+  name: string;
+  date: string;
+  delivery: string;
+  time: string;
+  image: string | null;
+  agree: string;
+}
+
+export interface ArticleData {
+  body: string;
+  thumbnail?: string;
+  standfirst: string;
+  webPublicationDate: string;
+  shortUrl: string;
+}
+
+export interface InitialState {
+  search: {
+    query: string;
+    dataArr: GuardianResponseItem[] | [];
+    sort: string;
+    totalPages: number | null;
+    currentPage: number;
+    itemsPerPage: number;
+    articleData: ArticleData | null;
+  };
+  form: {
+    name: string;
+    date: string;
+    delivery: string;
+    time: string;
+    image: string;
+    agree: string;
+    formStatesArr: FormData[] | [];
+  };
+}
+
 export interface GuardianResponseItem {
   id: string;
   type: string;
@@ -68,43 +106,6 @@ export interface GuardianResponse {
     pages: number;
     orderBy: string;
     results: GuardianResponseItem[];
-  };
-}
-
-export interface ModalData {
-  body: string;
-  thumbnail?: string;
-  standfirst: string;
-  webPublicationDate: string;
-  shortUrl: string;
-}
-
-export interface FormDataValues {
-  name: string;
-  date: string;
-  delivery: string;
-  time: string;
-  image: string | null;
-  agree: string;
-  formStatesArr: FormData[] | [];
-}
-
-export interface InitialState {
-  search: {
-    query: string;
-    dataArr: GuardianResponseItem[] | [];
-    sort: string;
-    totalPages: number | null;
-    currentPage: number;
-    itemsPerPage: number;
-  };
-  form: {
-    name: string;
-    date: string;
-    delivery: string;
-    time: string;
-    image: string;
-    agree: string;
   };
 }
 

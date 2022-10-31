@@ -32,6 +32,8 @@ export const searchReducer = (state: SearchState, action: SearchAction) => {
       return { ...state, currentPage: action.payload };
     case SearchActionTypes.SET_ITEMS_PER_PAGE:
       return { ...state, itemsPerPage: action.payload };
+    case SearchActionTypes.SET_ARTICLE_DATA:
+      return { ...state, articleData: action.payload };
     default:
       return state;
   }

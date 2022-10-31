@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, Dispatch } from 'react';
+import React, { createContext, useReducer, Dispatch, PropsWithChildren } from 'react';
 
 import { searchReducer, formReducer } from '../store/reducers';
 import { SearchAction } from '../types/search';
@@ -13,6 +13,7 @@ const initialState = {
     totalPages: null,
     currentPage: 1,
     itemsPerPage: 20,
+    articleData: null,
   },
   form: {
     name: '',
@@ -38,7 +39,7 @@ const rootReducer = ({ search, form }: InitialState, action: SearchAction | Form
   form: formReducer(form, action as FormAction),
 });
 
-const AppProvider: React.FC = ({ children }) => {
+const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(rootReducer, initialState);
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 };

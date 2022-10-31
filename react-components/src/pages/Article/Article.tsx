@@ -1,22 +1,26 @@
-import React, { FC } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 
-import { CardItemModalProps } from './types';
+import { AppContext } from '../../context/AppContext';
 import { convertDate } from '../../utils/convertDate';
-import styles from './CardItemModal.module.scss';
+import { scrollToTop } from '../../utils/scrollToTop';
+import { Navigate } from 'react-router-dom';
 
-const CardItemModal: FC<CardItemModalProps> = ({
-  body,
-  thumbnail,
-  standfirst,
-  webPublicationDate,
-  shortUrl,
-}) => {
+import styles from './ArticlePage.module.scss';
+
+const Article: FC = () => {
+  const { state } = useContext(AppContext);
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
+  if (!state.search.articleData) return <Navigate replace to="/" />;
+
+  const { body, thumbnail, standfirst, webPublicationDate, shortUrl } = state.search.articleData;
+
   return (
-    <div data-testid="card-item-modal">
-      <div className={styles.closeWrapper}>
-        <button className={styles.close} data-testid="close-modal-button"></button>
-      </div>
-      <div className={styles.inner} onClick={(e) => e.stopPropagation()} data-testid="modal-inner">
+    <div className="container" data-testid="article">
+      <div className={styles.wrapper}>
         <header>
           <p dangerouslySetInnerHTML={{ __html: standfirst }} className={styles.standfirst}></p>
           <div className={styles.headerInner}>
@@ -41,4 +45,4 @@ const CardItemModal: FC<CardItemModalProps> = ({
   );
 };
 
-export default CardItemModal;
+export default Article;

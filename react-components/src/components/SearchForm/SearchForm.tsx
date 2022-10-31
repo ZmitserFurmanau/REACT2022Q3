@@ -85,19 +85,28 @@ const SearchForm: FC<SearchFormProps> = ({ setQuery, setSorting, setPage, setIte
         </select>
       </label>
       <label className={styles.label}>
-        <span className={styles.labelText}>Page number:</span>
-        <div>
-          <input
-            className={styles.page}
-            type="number"
-            value={pageNumber}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPageNumber(+e.target.value)}
-            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => updatePage(+e.target.value)}
-            min="1"
-            max={totalPages ? String(totalPages) : '1'}
-          />
-          <span className={styles.labelText}> / {totalPages}</span>
-        </div>
+        {query !== '' && (
+          <div className={styles.pagination}>
+            <span className={styles.labelText}>Page number:</span>
+            <div>
+              <input
+                className={styles.page}
+                type="number"
+                value={pageNumber}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPageNumber(+e.target.value)
+                }
+                onBlur={(e: React.ChangeEvent<HTMLInputElement>) => updatePage(+e.target.value)}
+                min="1"
+                max={totalPages ? String(totalPages) : '1'}
+              />
+              <span className={styles.labelText}>
+                {' '}
+                / <span className={styles.total}>{totalPages}</span>
+              </span>
+            </div>
+          </div>
+        )}
       </label>
     </form>
   );

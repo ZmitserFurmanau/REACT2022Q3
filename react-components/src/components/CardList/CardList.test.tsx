@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import CardList from './CardList';
 import { mockGuardianResponse } from '../../tests/mockGuardianResponse';
@@ -7,9 +8,12 @@ import { mockGuardianResponse } from '../../tests/mockGuardianResponse';
 describe('Card item', () => {
   let list: HTMLElement;
   const testData = mockGuardianResponse().response.results;
-  const mock = jest.fn();
   beforeEach(() => {
-    render(<CardList dataArr={testData} toggleModal={mock} />);
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <CardList dataArr={testData} />
+      </MemoryRouter>
+    );
     list = screen.getByTestId('card-list');
   });
 
