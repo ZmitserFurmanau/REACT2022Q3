@@ -86,6 +86,7 @@ export interface FormDataValues {
   time: string;
   image: string | null;
   agree: string;
+  formStatesArr: FormData[] | [];
 }
 
 export interface InitialState {

@@ -1,15 +1,21 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext } from 'react';
 
 import FormCard from '../../components/FormCard';
 import { FormData } from '../../types/types';
 import FormCardList from '../../components/FormCardList';
+import { AppContext } from '../../context/AppContext';
+import { FormActionTypes } from '../../types/form';
 import styles from './Form.module.scss';
 
 const Form: FC = () => {
-  const [formStatesArr, setFormStatesArr] = useState<FormData[] | []>([]);
+  const { state, dispatch } = useContext(AppContext);
+  const { formStatesArr } = state.form;
 
   const setFormState = (newState: FormData) => {
-    setFormStatesArr([newState, ...formStatesArr]);
+    dispatch({
+      type: FormActionTypes.SET_FORM_STATES_ARR,
+      payload: [newState, ...state.form.formStatesArr],
+    });
   };
 
   return (

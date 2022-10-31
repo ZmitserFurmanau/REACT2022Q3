@@ -1,3 +1,5 @@
+import { FormData } from './types';
+
 export interface FormState {
   name: string;
   date: string;
@@ -5,6 +7,7 @@ export interface FormState {
   time: string;
   image: string;
   agree: string;
+  formStatesArr: FormData[] | [];
 }
 
 export enum FormActionTypes {
@@ -14,6 +17,7 @@ export enum FormActionTypes {
   SET_TIME = 'SET_TIME',
   SET_IMAGE = 'SET_IMAGE',
   SET_AGREE = 'SET_AGREE',
+  SET_FORM_STATES_ARR = 'SET_FORM_STATES_ARR',
 }
 
 interface SetNameAction {
@@ -46,10 +50,16 @@ interface SetAgreeAction {
   payload: string;
 }
 
+interface SetFormStatesArr {
+  type: FormActionTypes.SET_FORM_STATES_ARR;
+  payload: FormData[];
+}
+
 export type FormAction =
   | SetNameAction
   | SetDateAction
   | SetDeliveryAction
   | SetTimeAction
   | SetImageAction
-  | SetAgreeAction;
+  | SetAgreeAction
+  | SetFormStatesArr;
