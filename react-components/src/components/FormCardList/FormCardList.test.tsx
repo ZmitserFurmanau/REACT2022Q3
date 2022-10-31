@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 
 import FormCardList from './FormCardList';
 import { mockValidFormCard } from '../../tests/mockFormCard';
-import { FormData } from '../../utils/types';
+import { FormData } from '../../types/types';
 
 describe('Form card list', () => {
   const simgleRequest = mockValidFormCard() as FormData;

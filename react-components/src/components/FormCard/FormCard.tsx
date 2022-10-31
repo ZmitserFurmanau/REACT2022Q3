@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { FormDataValues, ErrorMessages } from '../../utils/types';
+import { FormDataValues, ErrorMessages } from '../../types/types';
 import { FormProps } from './types';
-import { fileReader } from '../../utils/fileReader';
+import { fileReader } from '../../types/fileReader';
 import NameInput from '../UI/NameInput';
 import DateInput from '../UI/DateInput';
 import DeliverySelect from '../UI/DeliverySelect';

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import CardItem from '../CardItem';
 import { CardListProps } from './types';
-import { GuardianResponseItem } from '../../utils/types';
+import { GuardianResponseItem } from '../../types/types';
 import styles from './CardList.module.scss';
 
 const CardList: FC<CardListProps> = ({ dataArr, toggleModal }) => {

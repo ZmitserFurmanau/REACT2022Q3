@@ -1,4 +1,4 @@
-import { GuardianResponseItem, ModalData } from '../../utils/types';
+import { GuardianResponseItem, ModalData } from '../../types/types';
 
 export interface CardItemProps {
   data: GuardianResponseItem;

@@ -1,4 +1,4 @@
-import { FormData } from '../../utils/types';
+import { FormData } from '../../types/types';
 
 export interface FormProps {
   setFormState: (state: FormData) => void;

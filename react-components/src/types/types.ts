@@ -88,6 +88,16 @@ export interface FormDataValues {
   agree: string;
 }
 
+export interface InitialState {
+  search: {
+    query: string;
+    dataArr: GuardianResponseItem[] | [];
+  };
+  form: {
+    testCounter: number;
+  };
+}
+
 export enum ErrorMessages {
   NAME_REQUIRED = 'This field cannot be empty',
   NAME_SHORT = 'This field cannot be less than 3 characters',

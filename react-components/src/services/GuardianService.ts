@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { GuardianResponse } from '../utils/types';
+import { GuardianResponse } from '../types/types';
 
 const endpointUrl = 'https://content.guardianapis.com/search';
 const apiKey = process.env.REACT_APP_API_KEY;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 
-import { FormDataValues } from '../../../utils/types';
+import { FormDataValues } from '../../../types/types';
 import styles from './TimeCheckbox.module.scss';
 
 const TimeCheckbox = (props: UseControllerProps<FormDataValues, 'time'>) => {

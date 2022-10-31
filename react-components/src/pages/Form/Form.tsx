@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 
 import FormCard from '../../components/FormCard';
-import { FormData } from '../../utils/types';
+import { FormData } from '../../types/types';
 import FormCardList from '../../components/FormCardList';
 import styles from './Form.module.scss';
 

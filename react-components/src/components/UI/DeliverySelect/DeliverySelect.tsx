@@ -1,6 +1,6 @@
 import React from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
-import { ErrorMessages, FormDataValues } from '../../../utils/types';
+import { ErrorMessages, FormDataValues } from '../../../types/types';
 import ErrorMessage from '../../FormErrorMessage';
 import styles from './DeliverySelect.module.scss';
 
