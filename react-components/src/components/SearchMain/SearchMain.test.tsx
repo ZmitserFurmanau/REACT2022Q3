@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -69,9 +69,8 @@ describe('Main page search functionality', () => {
       name: /find/i,
     });
     userEvent.click(button);
-    const loader = await screen.findByTestId('loader');
-    await waitForElementToBeRemoved(loader);
-    const card = screen.getAllByRole('listitem')[0];
+    const cards = await screen.findAllByRole('listitem');
+    const card = cards[0];
     userEvent.click(card);
 
     let modalWindow;
