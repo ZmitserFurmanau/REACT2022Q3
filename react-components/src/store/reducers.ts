@@ -26,6 +26,8 @@ export const searchReducer = (state: SearchState, action: SearchAction) => {
       return { ...state, agree: action.payload };
     case FormActionTypes.SET_FORM_STATES_ARR:
       return { ...state, formStatesArr: action.payload };
+    case SearchActionTypes.SET_SORTING:
+      return { ...state, sort: action.payload };
     default:
       return state;
   }

@@ -3,11 +3,13 @@ import { GuardianResponseItem } from './types';
 export interface SearchState {
   query: string;
   dataArr: GuardianResponseItem[] | [];
+  sort: string;
 }
 
 export enum SearchActionTypes {
   SET_QUERY = 'SET_QUERY',
   SET_DATA = 'SET_DATA',
+  SET_SORTING = 'SET_SORTING',
 }
 
 interface SetQueryAction {
@@ -20,4 +22,9 @@ interface SetDataAction {
   payload: GuardianResponseItem[];
 }
 
-export type SearchAction = SetQueryAction | SetDataAction;
+interface SetSortingAction {
+  type: SearchActionTypes.SET_SORTING;
+  payload: string;
+}
+
+export type SearchAction = SetQueryAction | SetDataAction | SetSortingAction;

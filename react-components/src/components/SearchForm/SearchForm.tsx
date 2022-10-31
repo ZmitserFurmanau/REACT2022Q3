@@ -4,37 +4,43 @@ import { SearchFormProps } from './types';
 import { AppContext } from '../../context/AppContext';
 import styles from './SearchForm.module.scss';
 
-const SearchForm: FC<SearchFormProps> = ({ setQuery }) => {
-  const [formValue, setFormValue] = useState<string>('');
+const SearchForm: FC<SearchFormProps> = ({ setQuery, setSorting }) => {
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const { state } = useContext(AppContext);
-  const { query } = state.search;
+  const { query, dataArr, sort } = state.search;
 
   const nameInput = 'search';
   const typeInput = 'text';
   const placeholderInput = 'Search...';
 
   useEffect(() => {
-    const prevValue = localStorage.getItem('zmitserfurmanau-search-query') || '';
-    setQuery(prevValue);
-    setFormValue(prevValue);
-  }, [setQuery]);
+    if (!dataArr.length) {
+      const prevValue = localStorage.getItem('zmitserfurmanau-search-query') || '';
+      setQuery(prevValue);
+      setSearchQuery(prevValue);
+    }
+  }, [dataArr, setQuery]);
 
   useEffect(() => {
     if (query) {
-      setFormValue(query);
+      setSearchQuery(query);
     }
   }, [query]);
 
-  const updateFormValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
-    target && setFormValue(target.value);
+    target && setSearchQuery(target.value);
+  };
+
+  const updateSorting = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSorting(e.target.value);
   };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setQuery(formValue);
-    localStorage.setItem('zmitserfurmanau-search-query', formValue);
+    setQuery(searchQuery);
+    localStorage.setItem('zmitserfurmanau-search-query', searchQuery);
   };
 
   return (
@@ -44,13 +50,18 @@ const SearchForm: FC<SearchFormProps> = ({ setQuery }) => {
         name={nameInput}
         type={typeInput}
         placeholder={placeholderInput}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFormValue(e)}
-        value={formValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateSearchQuery(e)}
+        value={searchQuery}
         autoFocus={true}
       />
       <button type="submit" className={styles.button}>
         Find
       </button>
+      <select className={styles.select} onChange={updateSorting} defaultValue={sort}>
+        <option value="newest">sort by newest</option>
+        <option value="oldest">sort by oldest</option>
+        <option value="relevance">sort by relevance</option>
+      </select>
     </form>
   );
 };

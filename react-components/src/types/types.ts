@@ -42,7 +42,7 @@ export interface GuardianResponseItem {
     shortUrl: string;
     shouldHideAdverts: string;
     showInRelatedContent: string;
-    thumbnail: string;
+    thumbnail?: string;
     legallySensitive: string;
     lang: string;
     isLive: string;
@@ -73,7 +73,7 @@ export interface GuardianResponse {
 
 export interface ModalData {
   body: string;
-  thumbnail: string;
+  thumbnail?: string;
   standfirst: string;
   webPublicationDate: string;
   shortUrl: string;
@@ -93,6 +93,7 @@ export interface InitialState {
   search: {
     query: string;
     dataArr: GuardianResponseItem[] | [];
+    sort: string;
   };
   form: {
     name: string;

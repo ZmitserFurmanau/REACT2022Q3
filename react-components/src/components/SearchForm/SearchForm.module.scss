@@ -5,13 +5,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 40px 50px;
   margin-top: 30px;
   border-radius: 10px;
 }
 
 .input {
-  flex-basis: 100%;
+  flex-basis: 70%;
   height: 30px;
   outline: none;
   border-radius: 5px;
@@ -27,7 +28,17 @@
 .button {
   background-color: #fff;
   border-radius: 5px;
-  width: 120px;
+  width: 100px;
   font-size: 17px;
   margin-left: 10px;
+}
+
+.select {
+  width: 200px;
+  height: 30px;
+  margin-top: 20px;
+  border-radius: 5px;
+  outline: none;
+  font-size: 18px;
+  padding-left: 5px;
 }

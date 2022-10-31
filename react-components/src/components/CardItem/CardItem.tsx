@@ -14,7 +14,13 @@ const CardItem: FC<CardItemProps> = (props) => {
       onClick={() => toggleModal({ body, thumbnail, standfirst, webPublicationDate, shortUrl })}
     >
       <div className={styles.img}>
-        <img src={thumbnail} className="img" width="500" height="300" alt="" />
+        <img
+          src={thumbnail ? thumbnail : '/img/no-image.png'}
+          className="img"
+          width="500"
+          height="300"
+          alt=""
+        />
       </div>
       <div className={styles.content}>
         <p className={styles.text}>{convertDate(webPublicationDate)}</p>

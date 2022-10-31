@@ -53,7 +53,6 @@ describe('Main page search functionality', () => {
       name: /find/i,
     });
     userEvent.click(button);
-    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     await waitFor(() => {
       expect(
         screen.getByText(mockedResponse.response.results[0].fields.headline)

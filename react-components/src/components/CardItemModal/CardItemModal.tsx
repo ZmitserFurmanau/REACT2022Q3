@@ -27,7 +27,13 @@ const CardItemModal: FC<CardItemModalProps> = ({
           </div>
         </header>
         <div className={styles.content}>
-          <img src={thumbnail} className={styles.image} width="500" height="300" alt="" />
+          <img
+            src={thumbnail ? thumbnail : '/img/no-image.png'}
+            className={styles.image}
+            width="500"
+            height="300"
+            alt=""
+          />
           <div dangerouslySetInnerHTML={{ __html: body }}></div>
         </div>
       </div>
