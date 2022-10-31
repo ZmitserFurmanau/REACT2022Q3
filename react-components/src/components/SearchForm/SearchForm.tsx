@@ -15,6 +15,12 @@ const SearchForm: FC<SearchFormProps> = ({ setQuery }) => {
   const placeholderInput = 'Search...';
 
   useEffect(() => {
+    const prevValue = localStorage.getItem('zmitserfurmanau-search-query') || '';
+    setQuery(prevValue);
+    setFormValue(prevValue);
+  }, [setQuery]);
+
+  useEffect(() => {
     if (query) {
       setFormValue(query);
     }
@@ -28,6 +34,7 @@ const SearchForm: FC<SearchFormProps> = ({ setQuery }) => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setQuery(formValue);
+    localStorage.setItem('zmitserfurmanau-search-query', formValue);
   };
 
   return (

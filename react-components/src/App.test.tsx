@@ -8,6 +8,7 @@ import { setupServer } from 'msw/node';
 import AppRouter from './router/AppRouter';
 import mockLocalStorage from './tests/mockLocalStorage';
 import { mockGuardianResponse } from './tests/mockGuardianResponse';
+import { AppProvider } from './context/AppContext';
 
 const { getItemMock, setItemMock } = mockLocalStorage();
 const mockedResponse = mockGuardianResponse();
@@ -29,9 +30,11 @@ describe('App', () => {
 
   beforeEach(() => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <AppRouter />
-      </MemoryRouter>
+      <AppProvider>
+        <MemoryRouter initialEntries={['/']}>
+          <AppRouter />
+        </MemoryRouter>
+      </AppProvider>
     );
   });
 

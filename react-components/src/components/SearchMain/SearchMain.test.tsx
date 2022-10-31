@@ -6,6 +6,7 @@ import { setupServer } from 'msw/node';
 
 import { mockGuardianResponse } from '../../tests/mockGuardianResponse';
 import SearchMain from './SearchMain';
+import { AppProvider } from '../../context/AppContext';
 
 const mockedResponse = mockGuardianResponse();
 
@@ -27,7 +28,11 @@ describe('Main page search functionality', () => {
   });
 
   beforeEach(() => {
-    render(<SearchMain />);
+    render(
+      <AppProvider>
+        <SearchMain />
+      </AppProvider>
+    );
     input = screen.getByPlaceholderText(/Search/i);
     wrapper = screen.getByTestId('home');
   });

@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useContext } from 'react';
+import React, { FC, useState, useEffect, useContext, useCallback } from 'react';
 
 import SearchForm from '../../components/SearchForm';
 import CardList from '../../components/CardList';
@@ -43,9 +43,12 @@ const SearchMain: FC = () => {
     }
   }, [dataArr]);
 
-  const updateQuery = (query: string) => {
-    dispatch({ type: SearchActionTypes.SET_QUERY, payload: query });
-  };
+  const updateQuery = useCallback(
+    (query: string) => {
+      dispatch({ type: SearchActionTypes.SET_QUERY, payload: query });
+    },
+    [dispatch]
+  );
 
   const toggleModal = (newModalData?: ModalData | undefined) => {
     setIsModalActive((isModalActive) => !isModalActive);
@@ -77,7 +80,7 @@ const SearchMain: FC = () => {
   return (
     <div data-testid="home">
       <div className={styles.formWrapper}>
-        <SearchForm setQuery={updateQuery} query={query} />
+        <SearchForm setQuery={updateQuery} />
       </div>
       {generateCards()}
       <div
