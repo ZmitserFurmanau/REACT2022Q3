@@ -12,10 +12,18 @@ export const formReducer = (state: FormState, action: FormAction) => {
 
 export const searchReducer = (state: SearchState, action: SearchAction) => {
   switch (action.type) {
-    case SearchActionTypes.SET_QUERY:
-      return { ...state, query: action.payload };
-    case SearchActionTypes.SET_DATA:
-      return { ...state, dataArr: action.payload };
+    case FormActionTypes.SET_NAME:
+      return { ...state, name: action.payload };
+    case FormActionTypes.SET_DATE:
+      return { ...state, date: action.payload };
+    case FormActionTypes.SET_DELIVERY:
+      return { ...state, delivery: action.payload };
+    case FormActionTypes.SET_TIME:
+      return { ...state, time: action.payload };
+    case FormActionTypes.SET_IMAGE:
+      return { ...state, image: action.payload };
+    case FormActionTypes.SET_AGREE:
+      return { ...state, agree: action.payload };
     default:
       return state;
   }

@@ -11,7 +11,12 @@ const initialState = {
     dataArr: [],
   },
   form: {
-    testCounter: 0,
+    name: '',
+    date: '',
+    delivery: 'default',
+    time: '',
+    image: '',
+    agree: '',
   },
 };
 

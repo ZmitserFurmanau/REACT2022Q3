@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 
 import { ErrorMessages, FormDataValues } from '../../../types/types';
 import ErrorMessage from '../../FormErrorMessage';
+import { AppContext } from '../../../context/AppContext';
+import { FormActionTypes } from '../../../types/form';
 import styles from './DateInput.module.scss';
 
 const DateInput = (props: UseControllerProps<FormDataValues, 'date'>) => {
   const { field, formState } = useController(props);
+  const { value } = field;
   const { errors } = formState;
+
+  const { dispatch } = useContext(AppContext);
+
+  useEffect(() => {
+    dispatch({ type: FormActionTypes.SET_DATE, payload: value });
+  }, [dispatch, value]);
 
   return (
     <label className="label">

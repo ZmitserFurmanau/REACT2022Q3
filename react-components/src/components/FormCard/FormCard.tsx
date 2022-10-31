@@ -1,9 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FormDataValues, ErrorMessages } from '../../types/types';
 import { FormProps } from './types';
-import { fileReader } from '../../types/fileReader';
+import { fileReader } from '../../utils/fileReader';
 import NameInput from '../UI/NameInput';
 import DateInput from '../UI/DateInput';
 import DeliverySelect from '../UI/DeliverySelect';
@@ -11,25 +11,27 @@ import TimeCheckbox from '../UI/TimeCheckbox';
 import AgreeCheckbox from '../UI/AgreeCheckbox';
 import FormModal from '../FormModal';
 import ErrorMessage from '../FormErrorMessage';
+import { AppContext } from '../../context/AppContext';
 import styles from './FormCard.module.scss';
 
 const FormCard: FC<FormProps> = ({ setFormState }) => {
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
+  const { state } = useContext(AppContext);
 
   const {
     handleSubmit,
     control,
-    formState: { errors, isDirty, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful },
     reset,
     register,
   } = useForm<FormDataValues>({
     defaultValues: {
-      name: '',
-      date: '',
-      delivery: 'default',
-      time: '',
-      image: '',
-      agree: '',
+      name: state.form.name,
+      date: state.form.date,
+      delivery: state.form.delivery,
+      time: state.form.time,
+      image: state.form.image,
+      agree: state.form.agree,
     },
     mode: 'onSubmit',
   });
@@ -102,7 +104,7 @@ const FormCard: FC<FormProps> = ({ setFormState }) => {
         <button
           type="submit"
           className={styles.button}
-          disabled={!isDirty || Object.keys(errors).length !== 0}
+          disabled={Object.keys(errors).length !== 0}
           data-testid="submit-button"
         >
           Place the order
