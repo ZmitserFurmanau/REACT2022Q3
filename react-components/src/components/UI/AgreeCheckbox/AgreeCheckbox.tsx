@@ -1,20 +1,20 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 
 import { ErrorMessages, FormDataValues } from '../../../types/types';
 import ErrorMessage from '../../FormErrorMessage';
-import { AppContext } from '../../../context/AppContext';
-import { FormActionTypes } from '../../../types/form';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setAgree } from '../../../store/reducers/formSlice';
 import styles from './AgreeCheckbox.module.scss';
 
 const AgreeCheckbox = (props: UseControllerProps<FormDataValues, 'agree'>) => {
   const { field, formState } = useController(props);
   const { value } = field;
   const { errors } = formState;
-  const { dispatch } = useContext(AppContext);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch({ type: FormActionTypes.SET_AGREE, payload: value });
+    dispatch(setAgree(value));
   }, [dispatch, value]);
 
   return (

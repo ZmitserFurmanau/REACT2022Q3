@@ -1,13 +1,14 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { Provider } from 'react-redux';
 
 import { mockGuardianResponse } from '../../tests/mockGuardianResponse';
 import SearchMain from './SearchMain';
-import { AppProvider } from '../../context/AppContext';
+import { store } from '../../store';
 
 const mockedResponse = mockGuardianResponse();
 
@@ -30,11 +31,11 @@ describe('Main page search functionality', () => {
 
   beforeEach(() => {
     render(
-      <AppProvider>
+      <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
           <SearchMain />
         </MemoryRouter>
-      </AppProvider>
+      </Provider>
     );
     input = screen.getByPlaceholderText(/Search/i);
     wrapper = screen.getByTestId('home');
@@ -56,8 +57,6 @@ describe('Main page search functionality', () => {
       name: /find/i,
     });
     userEvent.click(button);
-    const loader = await screen.findByTestId('loader');
-    await waitForElementToBeRemoved(loader);
     await waitFor(() => {
       expect(
         screen.getByText(mockedResponse.response.results[0].fields.headline)
@@ -82,7 +81,13 @@ describe('Main page network error behavior', () => {
   });
 
   it('should render network error message', async () => {
-    render(<SearchMain />);
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <SearchMain />
+        </MemoryRouter>
+      </Provider>
+    );
     const input = screen.getByPlaceholderText(/Search/i);
     expect(input).toContainHTML('');
     userEvent.type(input, 'california');

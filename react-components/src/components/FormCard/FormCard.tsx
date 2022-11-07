@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useContext } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FormDataValues, ErrorMessages } from '../../types/types';
@@ -11,12 +11,12 @@ import TimeCheckbox from '../UI/TimeCheckbox';
 import AgreeCheckbox from '../UI/AgreeCheckbox';
 import FormModal from '../FormModal';
 import ErrorMessage from '../FormErrorMessage';
-import { AppContext } from '../../context/AppContext';
+import { useAppSelector } from '../../hooks/redux';
 import styles from './FormCard.module.scss';
 
 const FormCard: FC<FormProps> = ({ setFormState }) => {
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
-  const { state } = useContext(AppContext);
+  const state = useAppSelector((state) => state.form);
 
   const {
     handleSubmit,
@@ -26,12 +26,12 @@ const FormCard: FC<FormProps> = ({ setFormState }) => {
     register,
   } = useForm<FormDataValues>({
     defaultValues: {
-      name: state.form.name,
-      date: state.form.date,
-      delivery: state.form.delivery,
-      time: state.form.time,
-      image: state.form.image,
-      agree: state.form.agree,
+      name: state.name,
+      date: state.date,
+      delivery: state.delivery,
+      time: state.time,
+      image: state.image,
+      agree: state.agree,
     },
     mode: 'onSubmit',
   });

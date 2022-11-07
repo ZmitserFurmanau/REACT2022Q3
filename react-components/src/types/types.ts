@@ -7,6 +7,13 @@ export interface CardData {
   ccal: string;
 }
 
+export interface GetData {
+  query: string;
+  itemsPerPage: number;
+  currentPage: number;
+  sort: string;
+}
+
 export interface FormData {
   name: string;
   date: string;

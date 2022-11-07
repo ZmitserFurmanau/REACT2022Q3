@@ -1,10 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 
 import { ErrorMessages, FormDataValues } from '../../../types/types';
 import ErrorMessage from '../../FormErrorMessage';
-import { AppContext } from '../../../context/AppContext';
-import { FormActionTypes } from '../../../types/form';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setDate } from '../../../store/reducers/formSlice';
 import styles from './DateInput.module.scss';
 
 const DateInput = (props: UseControllerProps<FormDataValues, 'date'>) => {
@@ -12,10 +12,10 @@ const DateInput = (props: UseControllerProps<FormDataValues, 'date'>) => {
   const { value } = field;
   const { errors } = formState;
 
-  const { dispatch } = useContext(AppContext);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch({ type: FormActionTypes.SET_DATE, payload: value });
+    dispatch(setDate(value));
   }, [dispatch, value]);
 
   return (

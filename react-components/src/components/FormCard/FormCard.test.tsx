@@ -1,9 +1,11 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
 
 import FormCard from './FormCard';
 import { mockInvalidFormCard, mockValidFormCard } from '../../tests/mockFormCard';
+import { store } from '../../store';
 
 describe('Form card item', () => {
   let form: HTMLElement;
@@ -19,7 +21,11 @@ describe('Form card item', () => {
 
   const setup = () => {
     const mock = jest.fn();
-    render(<FormCard setFormState={mock} />);
+    render(
+      <Provider store={store}>
+        <FormCard setFormState={mock} />
+      </Provider>
+    );
     form = screen.getByTestId('form-card');
     name = screen.getByRole('textbox', { name: /name:/i });
     date = screen.getByTestId('date-input');

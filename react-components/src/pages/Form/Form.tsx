@@ -1,21 +1,18 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 
 import FormCard from '../../components/FormCard';
 import { FormData } from '../../types/types';
 import FormCardList from '../../components/FormCardList';
-import { AppContext } from '../../context/AppContext';
-import { FormActionTypes } from '../../types/form';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { setFormStatesArr } from '../../store/reducers/formSlice';
 import styles from './Form.module.scss';
 
 const Form: FC = () => {
-  const { state, dispatch } = useContext(AppContext);
-  const { formStatesArr } = state.form;
+  const dispatch = useAppDispatch();
+  const { formStatesArr } = useAppSelector((state) => state.form);
 
   const setFormState = (newState: FormData) => {
-    dispatch({
-      type: FormActionTypes.SET_FORM_STATES_ARR,
-      payload: [newState, ...state.form.formStatesArr],
-    });
+    dispatch(setFormStatesArr([newState, ...formStatesArr]));
   };
 
   return (

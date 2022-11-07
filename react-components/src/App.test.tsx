@@ -4,13 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { Provider } from 'react-redux';
 
 import AppRouter from './router/AppRouter';
 import mockLocalStorage from './tests/mockLocalStorage';
 import { mockGuardianResponse } from './tests/mockGuardianResponse';
-import { AppProvider } from './context/AppContext';
+import { store } from './store';
 
-const { getItemMock, setItemMock } = mockLocalStorage();
+const { setItemMock } = mockLocalStorage();
 const mockedResponse = mockGuardianResponse();
 
 describe('App', () => {
@@ -33,11 +34,11 @@ describe('App', () => {
 
   beforeEach(() => {
     render(
-      <AppProvider>
+      <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
           <AppRouter />
         </MemoryRouter>
-      </AppProvider>
+      </Provider>
     );
     window.scrollTo = jest.fn();
     input = screen.getByPlaceholderText(/Search/i);
@@ -62,7 +63,6 @@ describe('App', () => {
   });
 
   it('should open article page', async () => {
-    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     expect(input).toContainHTML('');
     userEvent.type(input, 'california');
     expect(input).toContainHTML('california');
@@ -101,9 +101,11 @@ describe('App', () => {
 describe('Error page', () => {
   beforeEach(() => {
     render(
-      <MemoryRouter initialEntries={['/wrong-url']}>
-        <AppRouter />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/wrong-url']}>
+          <AppRouter />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
@@ -119,14 +121,17 @@ describe('Local storage', () => {
 
   beforeEach(() => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <AppRouter />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <AppRouter />
+        </MemoryRouter>
+      </Provider>
     );
     input = screen.getByPlaceholderText(/Search/i);
   });
 
   it('should save/read input value to/from localstorage', () => {
+    userEvent.clear(input);
     expect(input).toContainHTML('');
     userEvent.type(input, value);
     expect(input).toContainHTML(value);
@@ -138,9 +143,5 @@ describe('Local storage', () => {
     userEvent.click(button);
     userEvent.click(aboutLink);
     expect(setItemMock).toHaveBeenCalledWith(key, value);
-
-    const homeLink = screen.getByTestId('home-link');
-    userEvent.click(homeLink);
-    expect(getItemMock).toHaveBeenCalledWith(key);
   });
 });
